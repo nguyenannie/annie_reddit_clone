@@ -30,6 +30,7 @@ public class CommentController {
     public String postComment(Model model, HttpServletRequest request,
                               @PathVariable(value = "username") String username,
                               @PathVariable(value = "postid") String id) {
+
         Post post = postServiceDb.findOne(Long.parseLong(id));
         User user = userServiceDb.findByName(username);
 
