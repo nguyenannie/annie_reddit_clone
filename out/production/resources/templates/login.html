@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reddit Login #</title>
+    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="utf-8" />
+</head>
+<body class="login-page">
+<main class="form-signin">
+    <div class="container-fluid">
+        <h1>Reddit Login</h1>
+        <form action="#" th:action="@{/login}" method="post">
+            <p><input class="form-control login1" placeholder="Username" type="text" name="username"/></p>
+            <p><input class="form-control login2" placeholder="Password" type="text" name="password"/></p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
+    </div>
+</main>
+<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+</body>
+</html>
+

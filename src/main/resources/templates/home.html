@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reddit-Home #</title>
+    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="utf-8" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-dark bg-company-blue">
+        <div class="container home">
+            <div class="navbar-header">
+                <a class="logo">
+                    <img class="img-responsive" th:src="@{/images/redditlogo.png}"/>
+                </a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a class="nav-link" th:href="@{'/home/' + ${user.name}}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{'/home/' + ${user.name} + '/createpost'}">Create Post</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="dropdown01"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name}}">Account Info</a></li>
+                            <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name} + '/changepassword'}">Change Password</a></li>
+                            <li><a class="dropdown-item" th:href="@{/login}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container-fluid">
+    <main role="main">
+        <h1>Trending Posts </h1>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Upvote</th>
+                    <th>Score</th>
+                    <th>Downvote</th>
+                    <th>Title</th>
+                    <th>Creation Time</th>
+                    <th>Author</th>
+                </tr>
+                </thead>
+                <tbody th:each="post:${posts}">
+                <tr>
+                    <td th:text="${1 + postStat.index}"></td>
+                    <form action="#" th:action="@{'/home/upvote/' + ${user.name} + '/' + ${post.id} }" method="post">
+                        <td><button class="btn btn-success" type="submit" name="upvote" th:value="${post.id}">
+                            <span class="glyphicon glyphicon-thumbs-up"></span></button></td>
+                    </form>
+                    <td th:text="${post.score}"></td>
+                    <form action="#" th:action="@{'/home/downvote/' + ${user.name} + '/' + ${post.id} }" method="post">
+                        <td><button class="btn btn-danger" type="submit" name="downvote" th:value="${post.id}">
+                            <span class="glyphicon glyphicon-thumbs-down"></span></button></td>
+                    </form>
+                    <td><a th:href="@{'/' + ${user.name} + '/post/' + ${post.id}}" th:text="${post.title}"></a></td>
+                    <td th:text="${post.creationDate}"></td>
+                    <td th:text="${post.user.name}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row page">
+            <div class="form-group col-md-1">
+                <select class="form-control pagination" id="pageSizeSelect">
+                    <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}"
+                            th:selected="${pageSize} == ${selectedPageSize}"></option>
+                </select>
+            </div>
+            <div th:if="${posts.totalPages != 1}" class="form-group col-md-11 pagination-centered">
+                <ul class="pagination">
+                    <li th:class="${posts.number == 0} ? disabled">
+                        <a class="pageLink" th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                    </li>
+                    <li th:class="${posts.number == 0} ? disabled">
+                        <a class="pageLink" th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.number})}">&larr;</a>
+                    </li>
+                    <li th:class="${posts.number == (page - 1)} ? 'active pointer-disabled'"
+                        th:each="page : ${#numbers.sequence(pager.firstButton, pager.finalButton)}">
+                        <a class="pageLink" th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=${page})}"
+                           th:text="${page}"></a>
+                    </li>
+                    <li th:class="${posts.number + 1 == posts.totalPages} ? disabled">
+                        <a class="pageLink"
+                           th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.number + 2})}">&rarr;</a>
+                    </li>
+                    <li th:class="${posts.number + 1 == posts.totalPages} ? disabled">
+                        <a class="pageLink"
+                           th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.totalPages})}">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+</body>
+</html>

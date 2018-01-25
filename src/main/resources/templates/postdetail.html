@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Post Detail #</title>
+    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="utf-8" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-dark bg-company-blue">
+        <div class="container home">
+            <div class="navbar-header">
+                <a class="logo">
+                    <img class="img-responsive" th:src="@{/images/redditlogo.png}"/>
+                </a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a class="nav-link" th:href="@{'/home/' + ${user.name}}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{'/home/' + ${user.name} + '/createpost'}">Create Post</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="dropdown01"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name}}">Account Info</a></li>
+                            <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name} + '/changepassword'}">Change Password</a></li>
+                            <li><a class="dropdown-item" th:href="@{/login}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container-fluid">
+    <main role="main">
+        <h1 th:text="'Post: ' + ${post.title}"></h1>
+        <div class="created-by"><h5 th:text="'Created by ' + ${post.user} + ' at ' + ${post.creationDate}"></h5></div>
+        <div><h3>Content</h3></div>
+        <div><p th:text="${post.content}"></p></div>
+        <h3>Comments</h3>
+        <form action="#" th:action="@{'/' + ${user.name} + '/post/' + ${post.id} + '/comment'}" method="post">
+            <div><input class="form-control" placeholder="Comment..." type="text" name="addcomment"/></div>
+            <div class="submitandcancel"><button class="btn btn-info" type="submit">Comment</button>
+                <a class="btn btn-danger" role="button" th:href="@{'/' + ${user.name} + '/post/' + ${post.id}}">Cancel</a></div>
+        </form>
+        <div th:each="comment:${comments}">
+            <div><p th:text="'#' + ${1 + commentStat.index}"></p></div>
+            <div><p th:text="${comment.content}"></p></div>
+            <div><p th:text="'by ' + ${comment.user} + ' at ' + ${comment.creationDate}"></p></div>
+        </div>
+    </main>
+</div>
+<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+</body>
+</html>

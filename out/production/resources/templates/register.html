@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register #</title>
+    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="utf-8" />
+</head>
+<body>
+<main class="register">
+    <div class="container-fluid fillin">
+        <h1>Sign up</h1>
+        <form action="#" th:action="@{/register}" method="post">
+            <div><input class="form-control" placeholder="Username..." type="text" name="username"/></div>
+            <div><input class="form-control" placeholder="New Password..." type="text" name="password"/></div>
+            <div><input class="form-control" placeholder="Confirm Password..." type="text" name="confirmpassword"/></div>
+            <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
+                <a class="btn btn-danger" role="button" th:href="@{/reddit/welcome}">Cancel</a></div>
+        </form>
+    </div>
+</main>
+<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+</body>
+</html>

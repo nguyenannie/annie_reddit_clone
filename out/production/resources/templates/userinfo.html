@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Account #</title>
+    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="utf-8" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-dark bg-company-blue">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{'/home/' + ${user.name}}">Reddit</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a class="nav-link" th:href="@{'/home/' + ${user.name}}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li>
+                        <a th:href="@{'/home/' + ${user.name} + '/createpost'}">Create Post</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="dropdown01"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name}}">Account Info</a></li>
+                            <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name} + '/changepassword'}">Change Password</a></li>
+                            <li><a class="dropdown-item" th:href="@{/login}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container-fluid">
+    <main role="main">
+    <h1>My Account</h1>
+    <h3>My Posts</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Score</th>
+                    <th>Creation Time</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody th:each="mypost:${myposts}">
+                <tr>
+                    <td th:text="${mypost.title}"></td>
+                    <td th:text="${mypost.score}"></td>
+                    <td th:text="${mypost.creationDate}"></td>
+                    <form action="#" th:action="@{'/account/' + ${user.name} + '/post/' +  ${mypost.id} + '/delete'}" method="post">
+                        <td><button class="btn btn-danger" type="submit" name="delete" th:value="${mypost.id}">Delete</button></td>
+                    </form>
+                    <td>Edit</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    <h3>My Comments</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Content</th>
+                    <th>Creation Time</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody th:each="mycomment:${mycomments}">
+                <tr>
+                    <td th:text="${mycomment.content}"></td>
+                    <td th:text="${mycomment.creationDate}"></td>
+                    <form action="#" th:action="@{'/account/' + ${user.name} + '/comment/' +  ${mycomment.id} + '/delete'}" method="post">
+                        <td><button class="btn btn-danger" type="submit" name="delete" th:value="${mycomment.id}">Delete</button></td>
+                    </form>
+                    <td>Edit</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+</body>
+</html>
