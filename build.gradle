@@ -35,6 +35,7 @@ dependencies {
 	compile group: 'org.webjars.bower', name: 'jquery', version: '3.2.1'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	compile('org.postgresql:postgresql')
+	compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
 	compile("org.springframework.boot:spring-boot-starter-security")
 	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '2.1.2.RELEASE'
 
