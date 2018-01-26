@@ -1,17 +1,26 @@
 package com.greenfoxacademy.reddit.Model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table
-public class User {
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(unique = true, nullable = false)
     private String name;
     private String password;
+    private boolean enabled;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Comment> comments;
@@ -19,7 +28,13 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Post> posts;
 
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+
     public User() {
+        this.enabled = true;
     }
 
     public void addPost(Post post) {
@@ -71,6 +86,7 @@ public class User {
     public User(String name, String password) {
         this.name = name;
         this.password = password;
+        this.enabled = true;
     }
     public List<Comment> getComments() {
         return comments;
@@ -116,8 +132,38 @@ public class User {
         return this.id != 0 && user.getId() != 0 && id == user.getId();
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.createAuthorityList(role.getName());
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public void setPassword(String password) {
@@ -127,5 +173,13 @@ public class User {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

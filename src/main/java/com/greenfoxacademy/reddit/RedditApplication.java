@@ -1,11 +1,10 @@
 package com.greenfoxacademy.reddit;
 
+import com.greenfoxacademy.reddit.Model.Role;
 import com.greenfoxacademy.reddit.Model.User;
-import com.greenfoxacademy.reddit.Model.Comment;
-import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Repository.UserRepository;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
+import com.greenfoxacademy.reddit.Service.RoleServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,8 +20,15 @@ public class RedditApplication {
 
     @Bean
     public CommandLineRunner demo(CommentServiceDbImpl commentServiceDb,
-                                  PostServiceDbImpl postServiceDb, UserServiceDbImpl userServiceDb) {
+                                  PostServiceDbImpl postServiceDb, UserServiceDbImpl userServiceDb, RoleServiceDbImpl roleServiceDb) {
         return (String... args) -> {
+//            Role role = new Role("ROLE_USER");
+//            roleServiceDb.save(role);
+//
+//            User user = new User("user6","password");
+//            user.setRole(role);
+//            userServiceDb.save(user);
+
 //            User user1 = new User("natsdof", "12345");
 //            User user2 = new User("John", "iamnotfat");
 //            User user3 = new User("BigA", "idonteatalot");

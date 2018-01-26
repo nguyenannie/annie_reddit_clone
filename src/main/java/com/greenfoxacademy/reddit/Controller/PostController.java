@@ -7,6 +7,7 @@ import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class PostController {
     }
 
     @PostMapping("/home/upvote/{username}/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String postUpvote(Model model, HttpServletRequest request,
                              @PathVariable(value = "id") String id,
                              @PathVariable(value = "username") String username) {
@@ -45,6 +47,7 @@ public class PostController {
     }
 
     @PostMapping("/home/downvote/{username}/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String postDownvote(Model model, HttpServletRequest request,
                                @PathVariable(value = "id") String id,
                                @PathVariable(value = "username") String username) {
@@ -60,6 +63,7 @@ public class PostController {
     }
 
     @GetMapping("/home/{username}/createpost")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getAdd(Model model, HttpServletRequest request,
                          @PathVariable(value = "username") String username) {
         User user = userServiceDb.findByName(username);
@@ -69,6 +73,7 @@ public class PostController {
     }
 
     @PostMapping("/home/{username}/createpost")
+    //@PreAuthorize("hasRole('ROLE_USER')")
     public String postAdd(Model model, HttpServletRequest request,
                           @PathVariable(value = "username") String username) {
         User user = userServiceDb.findByName(username);
@@ -90,6 +95,7 @@ public class PostController {
     }
 
     @GetMapping("/{username}/post/{postid}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getPostDetail(Model model, HttpServletRequest request,
                                 @PathVariable(value = "username") String username,
                                 @PathVariable(value = "postid") String id) {

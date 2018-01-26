@@ -8,6 +8,7 @@ import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class CommentController {
     }
 
     @PostMapping("/{username}/post/{postid}/comment")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String postComment(Model model, HttpServletRequest request,
                               @PathVariable(value = "username") String username,
                               @PathVariable(value = "postid") String id) {

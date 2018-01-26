@@ -34,9 +34,19 @@ public class LoginController {
         User user = userServiceDb.findByName(usernameinput);
 
         if(userServiceDb.exists(id) && userServiceDb.findByName(usernameinput).getPassword().equals(userpasswordinput)) {
+            //add id to session??
             result = "redirect:/home/" + usernameinput;
         } else {
             result = "cannotdoit";
+        }
+
+        try {
+            Object flash = request.getSession().getAttribute("flash");
+            model.addAttribute("flash", flash);
+
+            request.getSession().removeAttribute("flash");
+        } catch (Exception ex) {
+
         }
 
         model.addAttribute("user", user);

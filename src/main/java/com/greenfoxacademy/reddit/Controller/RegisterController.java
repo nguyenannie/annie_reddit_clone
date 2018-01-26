@@ -1,6 +1,9 @@
 package com.greenfoxacademy.reddit.Controller;
 
+import com.greenfoxacademy.reddit.Model.Role;
 import com.greenfoxacademy.reddit.Model.User;
+import com.greenfoxacademy.reddit.Service.RoleService;
+import com.greenfoxacademy.reddit.Service.RoleServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegisterController {
 
     private final UserServiceDbImpl userServiceDb;
+    private final RoleServiceDbImpl roleService;
 
     @Autowired
-    public RegisterController(UserServiceDbImpl userServiceDb) {
+    public RegisterController(UserServiceDbImpl userServiceDb, RoleServiceDbImpl roleService) {
         this.userServiceDb = userServiceDb;
+        this.roleService = roleService;
     }
 
     @GetMapping(value = "/register")
@@ -32,9 +37,14 @@ public class RegisterController {
         String confirmpassword = request.getParameter("confirmpassword");
 
         if(!userServiceDb.exists(username) && password.equals(confirmpassword)) {
+            Role role = new Role("ROLE_USER");
+            roleService.save(role);
+
             User newUser = new User();
             newUser.setPassword(password);
             newUser.setName(username);
+            newUser.setRole(role);
+
             userServiceDb.save(newUser);
             result = "redirect:/login";
         } else {

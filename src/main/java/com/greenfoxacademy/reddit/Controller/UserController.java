@@ -8,6 +8,7 @@ import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/account/{username}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getUserInfo(Model model, @PathVariable(value = "username") String username) {
         User user = userServiceDb.findByName(username);
 
@@ -44,6 +46,7 @@ public class UserController {
     }
 
     @GetMapping("/account/{username}/changepassword")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String getchangePassword(Model model,
                                     @PathVariable(value = "username") String username) {
         User user = userServiceDb.findByName(username);
@@ -53,6 +56,7 @@ public class UserController {
     }
 
     @PostMapping("/account/{username}/changepassword")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String postUserPassword(Model model, @PathVariable(value = "username") String username,
                                    HttpServletRequest request) {
 
@@ -76,6 +80,7 @@ public class UserController {
 
 
     @PostMapping("/account/{username}/post/{postid}/delete")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String deletePost(Model model, @PathVariable(value = "username") String username, @PathVariable(value = "postid") String postid) {
         User user = userServiceDb.findByName(username);
         Post post = postServiceDb.findOne(Long.parseLong(postid));
@@ -94,6 +99,7 @@ public class UserController {
     }
 
     @PostMapping("/account/{username}/comment/{commentid}/delete")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String deleteComment(Model model, @PathVariable(value = "username") String username, @PathVariable(value = "commentid") String commentid) {
         User user = userServiceDb.findByName(username);
         Comment comment = commentServiceDb.findOne(Long.parseLong(commentid));
