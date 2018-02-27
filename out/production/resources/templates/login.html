@@ -11,6 +11,10 @@
     <div class="container-fluid">
         <h1>Reddit Login</h1>
         <form action="#" th:action="@{/login}" method="post">
+            <div th:if="${param.error}">
+                <h1 style="color:red">Username or Password is wrong. Please check again</h1>
+
+            </div>
             <p><input class="form-control login1" placeholder="Username" type="text" name="username"/></p>
             <p><input class="form-control login2" placeholder="Password" type="text" name="password"/></p>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>

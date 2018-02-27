@@ -96,12 +96,22 @@ public class PostController {
 
     @GetMapping("/{username}/post/{postid}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getPostDetail(Model model, HttpServletRequest request,
+    public String getPersonalPostDetail(Model model, HttpServletRequest request,
                                 @PathVariable(value = "username") String username,
                                 @PathVariable(value = "postid") String id) {
 
         User user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
+
+        Post post = postServiceDb.findOne(Long.parseLong(id));
+        model.addAttribute("post", post);
+        model.addAttribute("comments", post.getComments());
+        return "postdetail";
+    }
+
+    @GetMapping("/post/{postid}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String getPublicPostDetail(Model model, @PathVariable(value = "postid") String id) {
 
         Post post = postServiceDb.findOne(Long.parseLong(id));
         model.addAttribute("post", post);

@@ -1,5 +1,7 @@
 package com.greenfoxacademy.reddit;
 
+import com.greenfoxacademy.reddit.Model.Comment;
+import com.greenfoxacademy.reddit.Model.Post;
 import com.greenfoxacademy.reddit.Model.Role;
 import com.greenfoxacademy.reddit.Model.User;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
@@ -28,7 +30,7 @@ public class RedditApplication {
 //            User user = new User("user6","password");
 //            user.setRole(role);
 //            userServiceDb.save(user);
-
+//
 //            User user1 = new User("natsdof", "12345");
 //            User user2 = new User("John", "iamnotfat");
 //            User user3 = new User("BigA", "idonteatalot");

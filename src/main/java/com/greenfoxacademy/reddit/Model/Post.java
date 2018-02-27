@@ -23,8 +23,6 @@ public class Post {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<Comment> comments;
 
-    //private List<Vote> votes;
-
     public Post() {
         creationDate = String.valueOf(LocalDate.now());
         score = 0;

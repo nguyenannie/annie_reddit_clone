@@ -36,7 +36,13 @@ public class RegisterController {
         String password = request.getParameter("password");
         String confirmpassword = request.getParameter("confirmpassword");
 
-        if(!userServiceDb.exists(username) && password.equals(confirmpassword)) {
+        if(userServiceDb.exists(username)) {
+            model.addAttribute("error", "Username already existed. Please choose another one!");
+            result = "/register";
+        } else if(!password.equals(confirmpassword)) {
+            model.addAttribute("error", "Please check your password confirm!");
+            result = "/register";
+        } else {
             Role role = new Role("ROLE_USER");
             roleService.save(role);
 
@@ -46,9 +52,8 @@ public class RegisterController {
             newUser.setRole(role);
 
             userServiceDb.save(newUser);
+            model.addAttribute("error", "");
             result = "redirect:/login";
-        } else {
-            result = "cannotdoit";
         }
         return result;
     }

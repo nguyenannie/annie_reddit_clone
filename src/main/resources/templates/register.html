@@ -10,6 +10,7 @@
 <main class="register">
     <div class="container-fluid fillin">
         <h1>Sign up</h1>
+        <p th:text="${error}"></p>
         <form action="#" th:action="@{/register}" method="post">
             <div><input class="form-control" placeholder="Username..." type="text" name="username"/></div>
             <div><input class="form-control" placeholder="New Password..." type="text" name="password"/></div>

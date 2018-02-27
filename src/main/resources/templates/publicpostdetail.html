@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Reddit-Home #</title>
+    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="utf-8" />
+</head>
+<body>
+<div th:replace="public :: header"></div>
+<div class="container-fluid">
+    <main role="main">
+        <h1 th:text="'Post: ' + ${post.title}"></h1>
+        <div><h5 th:text="'Created by ' + ${post.user} + ' at ' + ${post.creationDate}"></h5></div>
+        <div><h3>Content</h3></div>
+        <div><p th:text="${post.content}"></p></div>
+        <h3>Comments</h3>
+        <div th:each="comment:${comments}">
+            <div><p th:text="'#' + ${commentStat.index}"></p></div>
+            <div><p th:text="${comment.content}"></p></div>
+            <div><p th:text="'by ' + ${comment.user} + ' at ' + ${comment.creationDate}"></p></div>
+        </div>
+    </main>
+</div>
+<!-- -->
+<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+</body>
+</html>

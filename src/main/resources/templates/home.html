@@ -7,8 +7,8 @@
     <meta charset="utf-8" />
 </head>
 <body>
-<div th:if="${#authentication.name} == ${user.name}">
-<header>
+<!--<div th:if="${#authentication.name} == ${user.name}">-->
+<header th:fragment="header">
     <nav class="navbar navbar-dark bg-company-blue">
         <div class="container home">
             <div class="navbar-header">
@@ -35,7 +35,12 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name}}">Account Info</a></li>
                             <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name} + '/changepassword'}">Change Password</a></li>
-                            <li><a class="dropdown-item" th:href="@{/login}">Logout</a></li>
+                            <li>
+                                <!--<a href="/logout">Logout</a>-->
+                                <form th:action="@{/logout}" method="post">
+                                    <input type="submit" value="Sign out"/>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -111,14 +116,15 @@
         </div>
     </main>
 </div>
-</div>
-<div th:unless="${#authentication.name} == ${user.name}">
-    <div class="mycontainer">
-        <h1>Sorry! You dont have the right to access this page! </h1>
-        <div class="redditor"><a class="btn btn-success" role="button" th:href="@{/login}">Already a Redittor?</a></div>
-        <div class="redditor"><a class="btn btn-warning" role="button" th:href="@{/register}">If not, Join us</a></div>
-    </div>
-</div>
+<!--</div>-->
+
+<!--<div th:unless="${#authentication.name} == ${user.name}">-->
+    <!--<div class="mycontainer">-->
+        <!--<h1>Sorry! You dont have the right to access this page! </h1>-->
+        <!--<div class="redditor"><a class="btn btn-success" role="button" th:href="@{/login}">Already a Redittor?</a></div>-->
+        <!--<div class="redditor"><a class="btn btn-warning" role="button" th:href="@{/register}">If not, Join us</a></div>-->
+    <!--</div>-->
+<!--</div>-->
 
 <!-- -->
 <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
