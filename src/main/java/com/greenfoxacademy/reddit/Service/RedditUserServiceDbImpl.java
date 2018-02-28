@@ -1,30 +1,29 @@
 package com.greenfoxacademy.reddit.Service;
 
-import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Model.User;
-import com.greenfoxacademy.reddit.Repository.UserRepository;
+import com.greenfoxacademy.reddit.Model.RedditUser;
+import com.greenfoxacademy.reddit.Repository.RedditUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceDbImpl implements UserService {
-    private final UserRepository userRepository;
+public class RedditUserServiceDbImpl implements RedditUserService {
+    private final RedditUserRepository userRepository;
 
 
     @Autowired
-    public UserServiceDbImpl(UserRepository userRepository) {
+    public RedditUserServiceDbImpl(RedditUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public void save(User user) {
+    public void save(RedditUser user) {
         userRepository.save(user);
     }
 
     @Override
-    public User findByName(String name) {
+    public RedditUser findByName(String name) {
         return userRepository.findByName(name);
     }
 
@@ -40,9 +39,9 @@ public class UserServiceDbImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByName(username);
+        RedditUser user = findByName(username);
         if(user == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("RedditUser not found");
         }
         return user;
     }

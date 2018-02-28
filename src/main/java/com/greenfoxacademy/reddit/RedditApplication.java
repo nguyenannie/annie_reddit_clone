@@ -1,13 +1,9 @@
 package com.greenfoxacademy.reddit;
 
-import com.greenfoxacademy.reddit.Model.Comment;
-import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Model.Role;
-import com.greenfoxacademy.reddit.Model.User;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RoleServiceDbImpl;
-import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
+import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,35 +19,35 @@ public class RedditApplication {
 
     @Bean
     public CommandLineRunner demo(CommentServiceDbImpl commentServiceDb,
-                                  PostServiceDbImpl postServiceDb, UserServiceDbImpl userServiceDb, RoleServiceDbImpl roleServiceDb) {
+                                  PostServiceDbImpl postServiceDb, RedditUserServiceDbImpl userServiceDb, RoleServiceDbImpl roleServiceDb) {
         return (String... args) -> {
 //            Role role = new Role("ROLE_USER");
 //            roleServiceDb.save(role);
 //
-//            User user = new User("user6","password");
+//            RedditUser user = new RedditUser("user6","password");
 //            user.setRole(role);
 //            userServiceDb.save(user);
 //
-//            User user1 = new User("natsdof", "12345");
-//            User user2 = new User("John", "iamnotfat");
-//            User user3 = new User("BigA", "idonteatalot");
-//            User user4 = new User("Mark", "iamsuperhandsome");
-//            User user5 = new User("Belli", "lovedrawing");
-//            User user6 = new User("fondetti", "idontknowwhoiam");
-//            User user7 = new User("sugardaddy", "madeupperson");
-//            User user8 = new User("catlover", "notkilllady");
-//            User user9 = new User("hotboy090", "12345");
-//            User user10 = new User("niceguy898", "donthatecat");
-//            User user11 = new User("Annie", "12345");
-//            User user12 = new User("Rubble", "iamnotfat");
-//            User user13 = new User("Sonic", "idonteatalot");
-//            User user14 = new User("Krisz", "iamsuperhandsome");
-//            User user15 = new User("Bea", "lovedrawing");
-//            User user16 = new User("Sally", "idontknowwhoiam");
-//            User user17 = new User("Johnney", "madeupperson");
-//            User user18 = new User("LadyKiller", "notkilllady");
-//            User user19 = new User("handsomeboy_903", "12345");
-//            User user20 = new User("CuteDog", "donthatecat");
+//            RedditUser user1 = new RedditUser("natsdof", "12345");
+//            RedditUser user2 = new RedditUser("John", "iamnotfat");
+//            RedditUser user3 = new RedditUser("BigA", "idonteatalot");
+//            RedditUser user4 = new RedditUser("Mark", "iamsuperhandsome");
+//            RedditUser user5 = new RedditUser("Belli", "lovedrawing");
+//            RedditUser user6 = new RedditUser("fondetti", "idontknowwhoiam");
+//            RedditUser user7 = new RedditUser("sugardaddy", "madeupperson");
+//            RedditUser user8 = new RedditUser("catlover", "notkilllady");
+//            RedditUser user9 = new RedditUser("hotboy090", "12345");
+//            RedditUser user10 = new RedditUser("niceguy898", "donthatecat");
+//            RedditUser user11 = new RedditUser("Annie", "12345");
+//            RedditUser user12 = new RedditUser("Rubble", "iamnotfat");
+//            RedditUser user13 = new RedditUser("Sonic", "idonteatalot");
+//            RedditUser user14 = new RedditUser("Krisz", "iamsuperhandsome");
+//            RedditUser user15 = new RedditUser("Bea", "lovedrawing");
+//            RedditUser user16 = new RedditUser("Sally", "idontknowwhoiam");
+//            RedditUser user17 = new RedditUser("Johnney", "madeupperson");
+//            RedditUser user18 = new RedditUser("LadyKiller", "notkilllady");
+//            RedditUser user19 = new RedditUser("handsomeboy_903", "12345");
+//            RedditUser user20 = new RedditUser("CuteDog", "donthatecat");
 //
 //
 //            Post post1 = new Post(user1, "She doesn't skip leg day", "Hot Body", 670);
@@ -150,26 +146,26 @@ public class RedditApplication {
 }
 
     /*
-            User user1 = new User("natsdof", "12345");
-            User user2 = new User("John", "iamnotfat");
-            User user3 = new User("BigA", "idonteatalot");
-            User user4 = new User("Mark", "iamsuperhandsome");
-            User user5 = new User("Belli", "lovedrawing");
-            User user6 = new User("fondetti", "idontknowwhoiam");
-            User user7 = new User("sugardaddy", "madeupperson");
-            User user8 = new User("catlover", "notkilllady");
-            User user9 = new User("hotboy090", "12345");
-            User user10 = new User("niceguy898", "donthatecat");
-            User user11 = new User("Annie", "12345");
-            User user12 = new User("Rubble", "iamnotfat");
-            User user13 = new User("Sonic", "idonteatalot");
-            User user14 = new User("Krisz", "iamsuperhandsome");
-            User user15 = new User("Bea", "lovedrawing");
-            User user16 = new User("Sally", "idontknowwhoiam");
-            User user17 = new User("John", "madeupperson");
-            User user18 = new User("LadyKiller", "notkilllady");
-            User user19 = new User("handsomeboy_903", "12345");
-            User user20 = new User("CuteDog", "donthatecat");
+            RedditUser user1 = new RedditUser("natsdof", "12345");
+            RedditUser user2 = new RedditUser("John", "iamnotfat");
+            RedditUser user3 = new RedditUser("BigA", "idonteatalot");
+            RedditUser user4 = new RedditUser("Mark", "iamsuperhandsome");
+            RedditUser user5 = new RedditUser("Belli", "lovedrawing");
+            RedditUser user6 = new RedditUser("fondetti", "idontknowwhoiam");
+            RedditUser user7 = new RedditUser("sugardaddy", "madeupperson");
+            RedditUser user8 = new RedditUser("catlover", "notkilllady");
+            RedditUser user9 = new RedditUser("hotboy090", "12345");
+            RedditUser user10 = new RedditUser("niceguy898", "donthatecat");
+            RedditUser user11 = new RedditUser("Annie", "12345");
+            RedditUser user12 = new RedditUser("Rubble", "iamnotfat");
+            RedditUser user13 = new RedditUser("Sonic", "idonteatalot");
+            RedditUser user14 = new RedditUser("Krisz", "iamsuperhandsome");
+            RedditUser user15 = new RedditUser("Bea", "lovedrawing");
+            RedditUser user16 = new RedditUser("Sally", "idontknowwhoiam");
+            RedditUser user17 = new RedditUser("John", "madeupperson");
+            RedditUser user18 = new RedditUser("LadyKiller", "notkilllady");
+            RedditUser user19 = new RedditUser("handsomeboy_903", "12345");
+            RedditUser user20 = new RedditUser("CuteDog", "donthatecat");
 
 
             Post post1 = new Post(user1, "She doesn't skip leg day", "Hot Body", 670);
@@ -263,16 +259,16 @@ public class RedditApplication {
             commentServiceDb.save(comment9);
             commentServiceDb.save(comment10);
 
-            User user1 = new User("Annie", "12345");
-            User user2 = new User("Rubble", "iamnotfat");
-            User user3 = new User("Sonic", "idonteatalot");
-            User user4 = new User("Krisz", "iamsuperhandsome");
-            User user5 = new User("Bea", "lovedrawing");
-            User user6 = new User("Sally", "idontknowwhoiam");
-            User user7 = new User("John", "madeupperson");
-            User user8 = new User("LadyKiller", "notkilllady");
-            User user9 = new User("handsomeboy_903", "12345");
-            User user10 = new User("CuteDog", "donthatecat");
+            RedditUser user1 = new RedditUser("Annie", "12345");
+            RedditUser user2 = new RedditUser("Rubble", "iamnotfat");
+            RedditUser user3 = new RedditUser("Sonic", "idonteatalot");
+            RedditUser user4 = new RedditUser("Krisz", "iamsuperhandsome");
+            RedditUser user5 = new RedditUser("Bea", "lovedrawing");
+            RedditUser user6 = new RedditUser("Sally", "idontknowwhoiam");
+            RedditUser user7 = new RedditUser("John", "madeupperson");
+            RedditUser user8 = new RedditUser("LadyKiller", "notkilllady");
+            RedditUser user9 = new RedditUser("handsomeboy_903", "12345");
+            RedditUser user10 = new RedditUser("CuteDog", "donthatecat");
 
             Post post1 = new Post(user1, "Cat is the best animal", "Cat gif", 500);
             Post post2 = new Post(user2, "2018 hair trend", "weird hair", 150);

@@ -1,10 +1,10 @@
 package com.greenfoxacademy.reddit.Controller;
 
 import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Model.User;
+import com.greenfoxacademy.reddit.Model.RedditUser;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
-import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
+import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,12 +19,12 @@ public class PostController {
 
     private final CommentServiceDbImpl commentServiceDb;
     private final PostServiceDbImpl postServiceDb;
-    private final UserServiceDbImpl userServiceDb;
+    private final RedditUserServiceDbImpl userServiceDb;
 
     @Autowired
     public PostController(CommentServiceDbImpl commentServiceDb,
                           PostServiceDbImpl postServiceDb,
-                          UserServiceDbImpl userServiceDb) {
+                          RedditUserServiceDbImpl userServiceDb) {
         this.commentServiceDb = commentServiceDb;
         this.postServiceDb = postServiceDb;
         this.userServiceDb = userServiceDb;
@@ -66,7 +66,7 @@ public class PostController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getAdd(Model model, HttpServletRequest request,
                          @PathVariable(value = "username") String username) {
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
 
         return "createpost";
@@ -76,7 +76,7 @@ public class PostController {
     //@PreAuthorize("hasRole('ROLE_USER')")
     public String postAdd(Model model, HttpServletRequest request,
                           @PathVariable(value = "username") String username) {
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
 
         String title = request.getParameter("addtitle");
@@ -100,7 +100,7 @@ public class PostController {
                                 @PathVariable(value = "username") String username,
                                 @PathVariable(value = "postid") String id) {
 
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
 
         Post post = postServiceDb.findOne(Long.parseLong(id));

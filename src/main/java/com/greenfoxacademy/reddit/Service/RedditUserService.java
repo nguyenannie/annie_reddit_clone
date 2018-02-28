@@ -1,13 +1,13 @@
 package com.greenfoxacademy.reddit.Service;
 
-import com.greenfoxacademy.reddit.Model.User;
+import com.greenfoxacademy.reddit.Model.RedditUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface UserService extends UserDetailsService {
-    void save(User user);
-    User findByName(String name);
+public interface RedditUserService extends UserDetailsService {
+    void save(RedditUser user);
+    RedditUser findByName(String name);
     boolean exists(long id);
     boolean exists(String username);
 }

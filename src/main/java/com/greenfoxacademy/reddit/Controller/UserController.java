@@ -2,10 +2,10 @@ package com.greenfoxacademy.reddit.Controller;
 
 import com.greenfoxacademy.reddit.Model.Comment;
 import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Model.User;
+import com.greenfoxacademy.reddit.Model.RedditUser;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
-import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
+import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,10 +22,10 @@ public class UserController {
 
     private final CommentServiceDbImpl commentServiceDb;
     private final PostServiceDbImpl postServiceDb;
-    private final UserServiceDbImpl userServiceDb;
+    private final RedditUserServiceDbImpl userServiceDb;
 
     @Autowired
-    public UserController(CommentServiceDbImpl commentServiceDb, PostServiceDbImpl postServiceDb, UserServiceDbImpl userServiceDb) {
+    public UserController(CommentServiceDbImpl commentServiceDb, PostServiceDbImpl postServiceDb, RedditUserServiceDbImpl userServiceDb) {
         this.commentServiceDb = commentServiceDb;
         this.postServiceDb = postServiceDb;
         this.userServiceDb = userServiceDb;
@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/account/{username}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getUserInfo(Model model, @PathVariable(value = "username") String username) {
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
 
         model.addAttribute("myposts", user.getPosts());
         model.addAttribute("postnum", user.getPosts().size());
@@ -49,7 +49,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getchangePassword(Model model,
                                     @PathVariable(value = "username") String username) {
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
 
         return "changepassword";
@@ -61,7 +61,7 @@ public class UserController {
                                    HttpServletRequest request) {
 
         String result;
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
 
         String newPassword = request.getParameter("changepassword");
         String confirmPassword = request.getParameter("confirmpassword");
@@ -82,7 +82,7 @@ public class UserController {
     @PostMapping("/account/{username}/post/{postid}/delete")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String deletePost(Model model, @PathVariable(value = "username") String username, @PathVariable(value = "postid") String postid) {
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
         Post post = postServiceDb.findOne(Long.parseLong(postid));
         List<Comment> comments = post.getComments();
 
@@ -101,7 +101,7 @@ public class UserController {
     @PostMapping("/account/{username}/comment/{commentid}/delete")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String deleteComment(Model model, @PathVariable(value = "username") String username, @PathVariable(value = "commentid") String commentid) {
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
         Comment comment = commentServiceDb.findOne(Long.parseLong(commentid));
 
         user.removeComment(comment);

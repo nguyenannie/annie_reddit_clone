@@ -2,9 +2,9 @@ package com.greenfoxacademy.reddit.Controller;
 
 import com.greenfoxacademy.reddit.Model.Pager;
 import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Model.User;
+import com.greenfoxacademy.reddit.Model.RedditUser;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
-import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
+import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,10 +31,10 @@ public class HomeController {
     private static final int[] PAGE_SIZES = {5, 10, 15};
 
     private final PostServiceDbImpl postServiceDb;
-    private final UserServiceDbImpl userServiceDb;
+    private final RedditUserServiceDbImpl userServiceDb;
 
     @Autowired
-    public HomeController(PostServiceDbImpl postServiceDb, UserServiceDbImpl userServiceDb) {
+    public HomeController(PostServiceDbImpl postServiceDb, RedditUserServiceDbImpl userServiceDb) {
         this.postServiceDb = postServiceDb;
         this.userServiceDb = userServiceDb;
     }
@@ -47,7 +47,7 @@ public class HomeController {
                           @RequestParam("pageSize") Optional<Integer> pageSize,
                           @RequestParam("page") Optional<Integer> page) {
 
-        User user = userServiceDb.findByName(username);
+        RedditUser user = userServiceDb.findByName(username);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Cookie cookie = new Cookie("username", username);

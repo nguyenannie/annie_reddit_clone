@@ -3,8 +3,6 @@ package com.greenfoxacademy.reddit.Model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -12,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table
-public class User implements UserDetails {
+public class RedditUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +32,7 @@ public class User implements UserDetails {
     private Role role;
 
 
-    public User() {
+    public RedditUser() {
         this.enabled = true;
     }
 
@@ -84,7 +82,7 @@ public class User implements UserDetails {
         comment.setUser(null);
     }
 
-    public User(String name, String password) {
+    public RedditUser(String name, String password) {
         this.name = name;
         this.password = password;
         this.enabled = true;
@@ -125,10 +123,10 @@ public class User implements UserDetails {
     public boolean equals(Object object) {
         if (object == this)
             return true;
-        if ((object == null) || !(object instanceof User))
+        if ((object == null) || !(object instanceof RedditUser))
             return false;
 
-        final User user = (User) object;
+        final RedditUser user = (RedditUser) object;
 
         return this.id != 0 && user.getId() != 0 && id == user.getId();
     }

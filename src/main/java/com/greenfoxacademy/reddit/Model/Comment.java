@@ -19,24 +19,24 @@ public class Comment {
 
     @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
     @JoinColumn(name = "user_id")
-    private User user;
+    private RedditUser user;
 
     public Comment() {
         creationDate = String.valueOf(LocalDateTime.now());
     }
 
-    public Comment(User user, Post post, String content) {
+    public Comment(RedditUser user, Post post, String content) {
         this.user = user;
         this.content = content;
         this.post = post;
         creationDate = String.valueOf(LocalDateTime.now());
     }
 
-    public void setUser(User user) {
+    public void setUser(RedditUser user) {
         setUser(user, true);
     }
 
-    void setUser(User user, boolean add) {
+    void setUser(RedditUser user, boolean add) {
         this.user = user;
         if (user != null && add) {
             user.addComment(this, false);
@@ -54,7 +54,7 @@ public class Comment {
         }
     }
 
-    public User getUser() {
+    public RedditUser getUser() {
         return user;
     }
 

@@ -18,7 +18,7 @@ public class Post {
 
     @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
     @JoinColumn(name = "user_id")
-    private User user;
+    private RedditUser user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<Comment> comments;
@@ -28,7 +28,7 @@ public class Post {
         score = 0;
     }
 
-    public Post(User author, String title, String content, int score) {
+    public Post(RedditUser author, String title, String content, int score) {
         this.user = author;
         this.title = title;
         this.content = content;
@@ -36,11 +36,11 @@ public class Post {
         creationDate = String.valueOf(LocalDate.now());
     }
 
-    public void setUser(User user) {
+    public void setUser(RedditUser user) {
         setUser(user, true);
     }
 
-    void setUser(User user, boolean add) {
+    void setUser(RedditUser user, boolean add) {
         this.user = user;
         if (user != null && add) {
             user.addPost(this, false);
@@ -118,7 +118,7 @@ public class Post {
         this.comments = comments;
     }
 
-    public User getUser() {
+    public RedditUser getUser() {
         return user;
     }
 

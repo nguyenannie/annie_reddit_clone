@@ -1,10 +1,9 @@
 package com.greenfoxacademy.reddit.Controller;
 
+import com.greenfoxacademy.reddit.Model.RedditUser;
 import com.greenfoxacademy.reddit.Model.Role;
-import com.greenfoxacademy.reddit.Model.User;
-import com.greenfoxacademy.reddit.Service.RoleService;
 import com.greenfoxacademy.reddit.Service.RoleServiceDbImpl;
-import com.greenfoxacademy.reddit.Service.UserServiceDbImpl;
+import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class RegisterController {
 
-    private final UserServiceDbImpl userServiceDb;
+    private final RedditUserServiceDbImpl userServiceDb;
     private final RoleServiceDbImpl roleService;
 
     @Autowired
-    public RegisterController(UserServiceDbImpl userServiceDb, RoleServiceDbImpl roleService) {
+    public RegisterController(RedditUserServiceDbImpl userServiceDb, RoleServiceDbImpl roleService) {
         this.userServiceDb = userServiceDb;
         this.roleService = roleService;
     }
@@ -46,7 +45,7 @@ public class RegisterController {
             Role role = new Role("ROLE_USER");
             roleService.save(role);
 
-            User newUser = new User();
+            RedditUser newUser = new RedditUser();
             newUser.setPassword(password);
             newUser.setName(username);
             newUser.setRole(role);
