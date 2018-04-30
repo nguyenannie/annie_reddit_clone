@@ -16,12 +16,6 @@ public class LogoutController {
     @PostMapping(value="/logout")
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-//        Cookie cookie = new Cookie("username","");
-//        cookie.setPath("/");
-//        cookie.setMaxAge(0);
-//        response.addCookie(cookie);
-
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }

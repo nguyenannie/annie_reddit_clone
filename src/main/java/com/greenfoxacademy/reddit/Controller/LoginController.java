@@ -33,7 +33,7 @@ public class LoginController {
         RedditUser user = userServiceDb.findByName(usernameinput);
 
         model.addAttribute("user", user);
-        return "redirect:/home/" + usernameinput;
+        return "redirect:/?username=" + usernameinput;
     }
 
 }

@@ -2,9 +2,11 @@ package com.greenfoxacademy.reddit.Controller;
 
 import com.greenfoxacademy.reddit.Model.Post;
 import com.greenfoxacademy.reddit.Model.RedditUser;
+import com.greenfoxacademy.reddit.Model.Vote;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
+import com.greenfoxacademy.reddit.Service.VoteService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PostController {
@@ -20,62 +23,79 @@ public class PostController {
     private final CommentServiceDbImpl commentServiceDb;
     private final PostServiceDbImpl postServiceDb;
     private final RedditUserServiceDbImpl userServiceDb;
+    private final VoteService voteService;
 
     @Autowired
     public PostController(CommentServiceDbImpl commentServiceDb,
                           PostServiceDbImpl postServiceDb,
-                          RedditUserServiceDbImpl userServiceDb) {
+                          RedditUserServiceDbImpl userServiceDb, VoteService voteService) {
         this.commentServiceDb = commentServiceDb;
         this.postServiceDb = postServiceDb;
         this.userServiceDb = userServiceDb;
+        this.voteService = voteService;
     }
 
-    @PostMapping("/home/upvote/{username}/{id}")
+    @PostMapping("/upvote")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String postUpvote(Model model, HttpServletRequest request,
-                             @PathVariable(value = "id") String id,
-                             @PathVariable(value = "username") String username) {
+                             @RequestParam(value = "postid") String id,
+                             @RequestParam(value = "username") String username) {
         Post post = postServiceDb.findOne(Long.parseLong(id));
-
-        int score = post.getScore();
-        score += 1;
-        post.setScore(score);
-
+        RedditUser user = userServiceDb.findByName(username);
+        Vote vote = voteService.findByPostAndUser(post, user);
+        if (vote == null) {
+            Vote upvote = new Vote(user, post, 1);
+            voteService.save(upvote);
+        } else if (vote.getVote() == -1) {
+            vote.setVote(1);
+            voteService.save(vote);
+        } else {
+            post.getVotes().remove(vote);
+            voteService.delete(vote);
+        }
+        post.setScore(post.getVotes().stream().mapToInt(Vote::getVote).sum());
         postServiceDb.save(post);
-
-        return "redirect:/home/" + username;
+        model.addAttribute("voteService", voteService);
+        return "redirect:?username=" + username;
     }
 
-    @PostMapping("/home/downvote/{username}/{id}")
+    @PostMapping("/downvote")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String postDownvote(Model model, HttpServletRequest request,
-                               @PathVariable(value = "id") String id,
-                               @PathVariable(value = "username") String username) {
+                               @RequestParam(value = "postid") String id,
+                               @RequestParam(value = "username") String username) {
         Post post = postServiceDb.findOne(Long.parseLong(id));
-
-        int score = post.getScore();
-        score -= 1;
-        post.setScore(score);
-
+        RedditUser user = userServiceDb.findByName(username);
+        Vote vote = voteService.findByPostAndUser(post, user);
+        if (vote == null) {
+            Vote downvote = new Vote(user, post, -1);
+            voteService.save(downvote);
+        } else if (vote.getVote() == 1) {
+            vote.setVote(-1);
+            voteService.save(vote);
+        } else {
+            post.getVotes().remove(vote);
+            voteService.delete(vote);
+        }
+        post.setScore(post.getVotes().stream().mapToInt(Vote::getVote).sum());
         postServiceDb.save(post);
-
-        return "redirect:/home/" + username;
+        model.addAttribute("voteService", voteService);
+        return "redirect:?username=" + username;
     }
 
-    @GetMapping("/home/{username}/createpost")
+    @GetMapping("/createpost")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getAdd(Model model, HttpServletRequest request,
-                         @PathVariable(value = "username") String username) {
+                         @RequestParam(value = "username") String username) {
         RedditUser user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
 
         return "createpost";
     }
 
-    @PostMapping("/home/{username}/createpost")
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/createpost")
     public String postAdd(Model model, HttpServletRequest request,
-                          @PathVariable(value = "username") String username) {
+                          @RequestParam(value = "username") String username) {
         RedditUser user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
 
@@ -91,14 +111,14 @@ public class PostController {
         userServiceDb.save(user);
         postServiceDb.save(newPost);
 
-        return "redirect:/home/" + username;
+        return "redirect:?username=" + username;
     }
 
-    @GetMapping("/{username}/post/{postid}")
+    @GetMapping("/post")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getPersonalPostDetail(Model model, HttpServletRequest request,
-                                @PathVariable(value = "username") String username,
-                                @PathVariable(value = "postid") String id) {
+                                @RequestParam(value = "username") String username,
+                                @RequestParam(value = "postid") String id) {
 
         RedditUser user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
@@ -109,13 +129,12 @@ public class PostController {
         return "postdetail";
     }
 
-    @GetMapping("/post/{postid}")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String getPublicPostDetail(Model model, @PathVariable(value = "postid") String id) {
-
-        Post post = postServiceDb.findOne(Long.parseLong(id));
-        model.addAttribute("post", post);
-        model.addAttribute("comments", post.getComments());
-        return "postdetail";
-    }
+//    @GetMapping("/post")
+//    public String getPublicPostDetail(Model model, @RequestParam(value = "postid") String id) {
+//
+//        Post post = postServiceDb.findOne(Long.parseLong(id));
+//        model.addAttribute("post", post);
+//        model.addAttribute("comments", post.getComments());
+//        return "postdetail";
+//    }
 }

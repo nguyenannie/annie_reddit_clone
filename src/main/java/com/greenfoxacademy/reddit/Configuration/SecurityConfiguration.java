@@ -18,7 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/welcome/reddit").permitAll()
+                .antMatchers("/welcome/reddit", "/").permitAll()
                 .antMatchers("/reddit").permitAll()
                 .and()
                 .formLogin()
@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private AuthenticationSuccessHandler loginSuccessHandler() {
         return (request, response, authentication) ->
-                response.sendRedirect("/home/" + authentication.getName());
+                response.sendRedirect("/?username=" + authentication.getName());
     }
 
     private AuthenticationFailureHandler loginFailureHandler() {

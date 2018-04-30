@@ -27,6 +27,9 @@ public class RedditUser implements UserDetails {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Post> posts;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Vote> votes;
+
     @OneToOne
     @JoinColumn(name = "role_id")
     private Role role;

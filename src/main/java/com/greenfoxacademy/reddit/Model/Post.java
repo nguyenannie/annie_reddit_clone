@@ -3,6 +3,7 @@ package com.greenfoxacademy.reddit.Model;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table
@@ -13,8 +14,8 @@ public class Post {
     @Column(nullable = false)
     private String title;
     private String content;
-    private int score;
     private String creationDate;
+    private int score;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
     @JoinColumn(name = "user_id")
@@ -23,16 +24,17 @@ public class Post {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<Comment> comments;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private List<Vote> votes;
+
     public Post() {
         creationDate = String.valueOf(LocalDate.now());
-        score = 0;
     }
 
-    public Post(RedditUser author, String title, String content, int score) {
+    public Post(RedditUser author, String title, String content) {
         this.user = author;
         this.title = title;
         this.content = content;
-        this.score = score;
         creationDate = String.valueOf(LocalDate.now());
     }
 
@@ -94,14 +96,6 @@ public class Post {
         this.content = content;
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public String getCreationDate() {
         return creationDate;
     }
@@ -134,5 +128,21 @@ public class Post {
         final Post post = (Post) object;
 
         return this.id != 0 && post.getId() != 0 && this.id == post.getId();
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

@@ -3,8 +3,10 @@ package com.greenfoxacademy.reddit.Controller;
 import com.greenfoxacademy.reddit.Model.Pager;
 import com.greenfoxacademy.reddit.Model.Post;
 import com.greenfoxacademy.reddit.Model.RedditUser;
+import com.greenfoxacademy.reddit.Model.Vote;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
+import com.greenfoxacademy.reddit.Service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,18 +34,19 @@ public class HomeController {
 
     private final PostServiceDbImpl postServiceDb;
     private final RedditUserServiceDbImpl userServiceDb;
+    private final VoteService voteService;
 
     @Autowired
-    public HomeController(PostServiceDbImpl postServiceDb, RedditUserServiceDbImpl userServiceDb) {
+    public HomeController(PostServiceDbImpl postServiceDb, RedditUserServiceDbImpl userServiceDb, VoteService voteService) {
         this.postServiceDb = postServiceDb;
         this.userServiceDb = userServiceDb;
+        this.voteService = voteService;
     }
 
-    @GetMapping(value = {"/home/{username}"})
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value = "")
     public String getHome(Model model,
                           HttpServletResponse response,
-                          @PathVariable(value = "username") String username,
+                          @RequestParam(value = "username", required = false) String username,
                           @RequestParam("pageSize") Optional<Integer> pageSize,
                           @RequestParam("page") Optional<Integer> page) {
 
@@ -54,10 +57,6 @@ public class HomeController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        if(user == null || !auth.getName().equals(username)) {
-            return "redirect:/accessdenied";
-        }
-
         int setPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int setPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
@@ -65,6 +64,7 @@ public class HomeController {
                 postServiceDb.findByPage(new PageRequest(setPage, setPageSize, Sort.Direction.DESC, "score"));
         Pager pager = new Pager(posts.getTotalPages(), posts.getNumber(), NUM_OF_BUTTONS);
 
+        model.addAttribute("voteService", voteService);
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("pager", pager);
@@ -76,7 +76,6 @@ public class HomeController {
 
     @GetMapping(value = "/accessdenied")
     public String accesssDenied(Principal user, Model model) {
-
         if (user != null) {
             model.addAttribute("msg", "Hi " + user.getName()
                     + ", you do not have permission to access this page!");
@@ -85,8 +84,6 @@ public class HomeController {
                     "You do not have permission to access this page!");
         }
         return "accessdenied";
-
     }
-
 
 }

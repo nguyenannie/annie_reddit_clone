@@ -23,13 +23,25 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a class="nav-link" th:href="@{'/home/' + ${user.name}}">Home <span class="sr-only">(current)</span></a>
+                    <li class="active" th:unless="${user == null}">
+                        <a class="nav-link" th:href="@{'/?username=' + ${user.name}}">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li>
-                        <a th:href="@{'/home/' + ${user.name} + '/createpost'}">Create Post</a>
+                    <li class="active" th:if="${user == null}">
+                        <a class="nav-link" th:href="@{''}">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li th:if="${user != null}">
+                        <a th:href="@{'/createpost?username=' + ${user.name}}">Create Post</a>
+                    </li>
+                    <li th:if="${user == null}">
+                        <a onclick="createPostNotSignIn()">Create Post</a>
+                    </li>
+                    <li th:if="${user == null}">
+                        <a href="/register">Sign Up</a>
+                    </li>
+                    <li th:if="${user == null}">
+                        <a href="/login">Sign In</a>
+                    </li>
+                    <li class="nav-item dropdown" th:if="${user != null}">
                         <a class="nav-link dropdown-toggle" id="dropdown01"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>
                         <ul class="dropdown-menu">
@@ -65,18 +77,27 @@
                 </tr>
                 </thead>
                 <tbody th:each="post:${posts}">
-                <tr>
+                <tr th:with="vote=${voteService.findByPostAndUser(post, user)}">
                     <td th:text="${1 + postStat.index}"></td>
-                    <form action="#" th:action="@{'/home/upvote/' + ${user.name} + '/' + ${post.id} }" method="post">
-                        <td><button class="btn btn-success" type="submit" name="upvote" th:value="${post.id}">
+                    <td th:if="${user == null}"><button class="btn" name="upvote" onclick="voteNotSignin()">
+                        <span class="glyphicon glyphicon-thumbs-up"></span></button></td>
+                    <form th:if="${user != null}" action="#" th:action="@{'/upvote?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
+                        <td th:if="${vote == null or vote.vote == -1}"><button class="btn" type="submit" name="upvote" th:value="${post.id}">
+                            <span class="glyphicon glyphicon-thumbs-up"></span></button></td>
+                        <td th:if="${vote != null and vote.vote == 1}"><button class="btn btn-success" type="submit" name="upvote" th:value="${post.id}">
                             <span class="glyphicon glyphicon-thumbs-up"></span></button></td>
                     </form>
                     <td th:text="${post.score}"></td>
-                    <form action="#" th:action="@{'/home/downvote/' + ${user.name} + '/' + ${post.id} }" method="post">
-                        <td><button class="btn btn-danger" type="submit" name="downvote" th:value="${post.id}">
+                    <td th:if="${user == null}"><button class="btn" name="downvote" onclick="voteNotSignin()">
+                        <span class="glyphicon glyphicon-thumbs-down"></span></button></td>
+                    <form th:if="${user != null}" action="#" th:action="@{'/downvote?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
+                        <td th:if="${vote == null or vote.vote == 1}"><button class="btn" type="submit" name="downvote" th:value="${post.id}">
+                            <span class="glyphicon glyphicon-thumbs-down"></span></button></td>
+                        <td th:if="${vote != null and vote.vote == -1}"><button class="btn btn-danger" type="submit" name="downvote" th:value="${post.id}">
                             <span class="glyphicon glyphicon-thumbs-down"></span></button></td>
                     </form>
-                    <td><a th:href="@{'/' + ${user.name} + '/post/' + ${post.id}}" th:text="${post.title}"></a></td>
+                    <td th:if="${user != null}"><a th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" th:text="${post.title}"></a></td>
+                    <td th:if="${user == null}" th:text="${post.title}"></td>
                     <td th:text="${post.creationDate}"></td>
                     <td th:text="${post.user.name}"></td>
                 </tr>
@@ -93,40 +114,45 @@
             <div th:if="${posts.totalPages != 1}" class="form-group col-md-11 pagination-centered">
                 <ul class="pagination">
                     <li th:class="${posts.number == 0} ? disabled">
-                        <a class="pageLink" th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                        <a th:if="${user == null}" class="pageLink" th:href="@{''(pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
+                        <a th:if="${user != null}" class="pageLink" th:href="@{'?username=' + ${user.name} (pageSize=${selectedPageSize}, page=1)}">&laquo;</a>
                     </li>
                     <li th:class="${posts.number == 0} ? disabled">
-                        <a class="pageLink" th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.number})}">&larr;</a>
+                        <a th:if="${user == null}" class="pageLink" th:href="@{''(pageSize=${selectedPageSize}, page=${posts.number})}">&larr;</a>
+                        <a th:if="${user != null}" class="pageLink" th:href="@{'?username=' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.number})}">&larr;</a>
                     </li>
                     <li th:class="${posts.number == (page - 1)} ? 'active pointer-disabled'"
                         th:each="page : ${#numbers.sequence(pager.firstButton, pager.finalButton)}">
-                        <a class="pageLink" th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=${page})}"
+                        <a th:if="${user == null}" class="pageLink" th:href="@{'' (pageSize=${selectedPageSize}, page=${page})}"
+                           th:text="${page}"></a>
+                        <a th:if="${user != null}" class="pageLink" th:href="@{'?username=' + ${user.name} (pageSize=${selectedPageSize}, page=${page})}"
                            th:text="${page}"></a>
                     </li>
                     <li th:class="${posts.number + 1 == posts.totalPages} ? disabled">
-                        <a class="pageLink"
-                           th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.number + 2})}">&rarr;</a>
+                        <a th:if="${user == null}" class="pageLink"
+                           th:href="@{'' (pageSize=${selectedPageSize}, page=${posts.number + 2})}">&rarr;</a>
+                        <a th:if="${user != null}" class="pageLink"
+                           th:href="@{'?username=' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.number + 2})}">&rarr;</a>
                     </li>
                     <li th:class="${posts.number + 1 == posts.totalPages} ? disabled">
-                        <a class="pageLink"
-                           th:href="@{'/home/' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.totalPages})}">&raquo;</a>
+                        <a th:if="${user == null}" class="pageLink"
+                           th:href="@{'' (pageSize=${selectedPageSize}, page=${posts.totalPages})}">&raquo;</a>
+                        <a th:if="${user != null}" class="pageLink"
+                           th:href="@{'?username=' + ${user.name} (pageSize=${selectedPageSize}, page=${posts.totalPages})}">&raquo;</a>
                     </li>
                 </ul>
             </div>
         </div>
     </main>
 </div>
-<!--</div>-->
-
-<!--<div th:unless="${#authentication.name} == ${user.name}">-->
-    <!--<div class="mycontainer">-->
-        <!--<h1>Sorry! You dont have the right to access this page! </h1>-->
-        <!--<div class="redditor"><a class="btn btn-success" role="button" th:href="@{/login}">Already a Redittor?</a></div>-->
-        <!--<div class="redditor"><a class="btn btn-warning" role="button" th:href="@{/register}">If not, Join us</a></div>-->
-    <!--</div>-->
-<!--</div>-->
-
-<!-- -->
+<script>
+    function voteNotSignin() {
+        alert("Please sign in or sign up to vote!");
+    }
+    function createPostNotSignIn() {
+        alert("Please sign in or sign up to create post!");
+    }
+</script>
 <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 </body>

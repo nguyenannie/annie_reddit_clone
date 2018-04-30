@@ -15,10 +15,10 @@
             <div><h3>Content</h3></div>
             <div><p th:text="${post.content}"></p></div>
             <h3>Comments</h3>
-            <form action="#" th:action="@{'/' + ${user.name} + '/post/' + ${post.id} + '/comment'}" method="post">
+            <form action="#" th:action="@{'/comment?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
                 <div><input class="form-control" placeholder="Comment..." type="text" name="addcomment"/></div>
                 <div><button class="btn btn-info" type="submit">Comment</button>
-                    <a class="btn btn-danger" role="button" th:href="@{'/' + ${user.name} + '/post/' + ${post.id}}">Cancel</a></div>
+                    <a class="btn btn-danger" role="button" th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}">Cancel</a></div>
             </form>
             <div th:each="comment:${comments}">
                 <div><p th:text="'#' + ${commentStat.index}"></p></div>

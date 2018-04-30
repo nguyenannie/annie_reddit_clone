@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CommentController {
@@ -27,11 +28,11 @@ public class CommentController {
         this.userServiceDb = userServiceDb;
     }
 
-    @PostMapping("/{username}/post/{postid}/comment")
+    @PostMapping("/comment")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String postComment(Model model, HttpServletRequest request,
-                              @PathVariable(value = "username") String username,
-                              @PathVariable(value = "postid") String id) {
+                              @RequestParam(value = "username") String username,
+                              @RequestParam(value = "postid") String id) {
 
         Post post = postServiceDb.findOne(Long.parseLong(id));
         RedditUser user = userServiceDb.findByName(username);
@@ -52,6 +53,7 @@ public class CommentController {
 
         model.addAttribute("user", user);
         model.addAttribute("post", post);
-        return "redirect:/" + username + "/post/" + id;
+        return "redirect:/post?username=" + username + "&postid=" + id;
     }
+
 }
