@@ -1,9 +1,8 @@
-package com.greenfoxacademy.reddit.Model;
+package com.greenfoxacademy.reddit.models;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table

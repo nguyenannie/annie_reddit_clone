@@ -1,19 +1,21 @@
 package com.greenfoxacademy.reddit.Controller;
 
-import com.greenfoxacademy.reddit.Model.Comment;
-import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Model.RedditUser;
+import com.greenfoxacademy.reddit.models.Comment;
+import com.greenfoxacademy.reddit.models.Post;
+import com.greenfoxacademy.reddit.models.RedditUser;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
+import com.greenfoxacademy.reddit.models.forms.PostForm;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,9 +33,9 @@ public class UserController {
         this.userServiceDb = userServiceDb;
     }
 
-    @GetMapping("/account/{username}")
+    @GetMapping("/mypost")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getUserInfo(Model model, @PathVariable(value = "username") String username) {
+    public String getPosts(Model model, @RequestParam(value = "username") String username) {
         RedditUser user = userServiceDb.findByName(username);
 
         model.addAttribute("myposts", user.getPosts());
@@ -41,47 +43,41 @@ public class UserController {
         model.addAttribute("mycomments", user.getComments());
         model.addAttribute("commentnum", user.getComments().size());
         model.addAttribute("user", user);
+        model.addAttribute("postForm", new PostForm("", ""));
 
-        return "userinfo";
+        return "mypost";
     }
 
-    @GetMapping("/account/{username}/changepassword")
+    @GetMapping("/mycomment")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String getchangePassword(Model model,
-                                    @PathVariable(value = "username") String username) {
-        RedditUser user = userServiceDb.findByName(username);
-        model.addAttribute("user", user);
-
-        return "changepassword";
-    }
-
-    @PostMapping("/account/{username}/changepassword")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String postUserPassword(Model model, @PathVariable(value = "username") String username,
-                                   HttpServletRequest request) {
-
-        String result;
+    public String getComments(Model model, @RequestParam(value = "username") String username) {
         RedditUser user = userServiceDb.findByName(username);
 
-        String newPassword = request.getParameter("changepassword");
-        String confirmPassword = request.getParameter("confirmpassword");
-
-        if(newPassword != null && newPassword.equals(confirmPassword) && !newPassword.equals(user.getPassword())) {
-            user.setPassword(newPassword);
-            userServiceDb.save(user);
-            result = "redirect:/account/" + username;
-        } else {
-            result = "cantchangeit";
-        }
+        model.addAttribute("myposts", user.getPosts());
+        model.addAttribute("postnum", user.getPosts().size());
+        model.addAttribute("mycomments", user.getComments());
+        model.addAttribute("commentnum", user.getComments().size());
         model.addAttribute("user", user);
-
-        return result;
+        return "mycomment";
     }
 
-
-    @PostMapping("/account/{username}/post/{postid}/delete")
+    @PostMapping("/editComment")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String deletePost(Model model, @PathVariable(value = "username") String username, @PathVariable(value = "postid") String postid) {
+    public String editComment(@ModelAttribute(value = "postForm") PostForm postForm, Model model,
+                              @RequestParam(value = "username") String username,
+                              @RequestParam(value = "commentid") String commentid) {
+        RedditUser user = userServiceDb.findByName(username);
+        Comment comment = commentServiceDb.findOne(Long.parseLong(commentid));
+        comment.setContent(postForm.getContent());
+        commentServiceDb.save(comment);
+        model.addAttribute("comment", comment);
+        model.addAttribute("user", user);
+        return "redirect:/mycomment?username=" + username;
+    }
+
+    @PostMapping("/deletePost")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String deletePost(Model model, @RequestParam(value = "username") String username, @RequestParam(value = "postid") String postid) {
         RedditUser user = userServiceDb.findByName(username);
         Post post = postServiceDb.findOne(Long.parseLong(postid));
         List<Comment> comments = post.getComments();
@@ -95,12 +91,26 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("post", post);
 
-        return "redirect:/account/" + username;
+        return "redirect:/mypost?username=" + username;
     }
 
-    @PostMapping("/account/{username}/comment/{commentid}/delete")
+    @PostMapping("/editPost")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String deleteComment(Model model, @PathVariable(value = "username") String username, @PathVariable(value = "commentid") String commentid) {
+    public String editPost(@ModelAttribute(value = "postForm") PostForm postForm, Model model, @RequestParam(value = "username") String username, @RequestParam(value = "postid") String postid) {
+        RedditUser user = userServiceDb.findByName(username);
+        Post post = postServiceDb.findOne(Long.parseLong(postid));
+        post.setTitle(postForm.getTitle());
+        post.setContent(postForm.getContent());
+        postServiceDb.save(post);
+        model.addAttribute("user", user);
+        model.addAttribute("post", post);
+
+        return "redirect:/mypost?username=" + username;
+    }
+
+    @PostMapping("/deleteComment")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String deleteComment(Model model, @RequestParam(value = "username") String username, @RequestParam(value = "commentid") String commentid) {
         RedditUser user = userServiceDb.findByName(username);
         Comment comment = commentServiceDb.findOne(Long.parseLong(commentid));
 
@@ -111,7 +121,40 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("comment", comment);
 
-        return "redirect:/account/" + username;
+        return "redirect:/mycomment?username=" + username;
+    }
+
+    @GetMapping("/changepassword")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String getchangePassword(Model model,
+                                    @RequestParam(value = "username") String username) {
+        RedditUser user = userServiceDb.findByName(username);
+        model.addAttribute("user", user);
+
+        return "changepassword";
+    }
+
+    @PostMapping("/changepassword")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String postUserPassword(Model model, @RequestParam(value = "username") String username,
+                                   HttpServletRequest request) {
+
+        String result;
+        RedditUser user = userServiceDb.findByName(username);
+
+        String newPassword = request.getParameter("changepassword");
+        String confirmPassword = request.getParameter("confirmpassword");
+
+        if(newPassword != null && newPassword.equals(confirmPassword) && !newPassword.equals(user.getPassword())) {
+            user.setPassword(newPassword);
+            userServiceDb.save(user);
+            result = "redirect:/mypost?username=" + username;
+        } else {
+            result = "cantchangeit";
+        }
+        model.addAttribute("user", user);
+
+        return result;
     }
 
 }

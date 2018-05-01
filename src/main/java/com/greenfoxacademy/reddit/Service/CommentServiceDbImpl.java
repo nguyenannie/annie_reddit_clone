@@ -1,7 +1,6 @@
 package com.greenfoxacademy.reddit.Service;
 
-import com.greenfoxacademy.reddit.Model.Comment;
-import com.greenfoxacademy.reddit.Model.Post;
+import com.greenfoxacademy.reddit.models.Comment;
 import com.greenfoxacademy.reddit.Repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

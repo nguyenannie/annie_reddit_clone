@@ -54,6 +54,14 @@ h1 {
     background-color: lightblue;
 }
 
+.bg-company-darkblue {
+    background-color: darkblue;
+}
+
+.bg-company-darkblue a{
+    color: white;
+}
+
 .fillin {
     max-width: 500px;
     margin: 0 auto;
@@ -84,10 +92,15 @@ h1 {
     text-align: center;
 }
 
-body {
-    background: url("../images/background.png");
-}
+/*body {*/
+    /*background: url("../images/background.png");*/
+/*}*/
 
 .created-by {
     text-align: center;
+}
+
+ul.nav a:hover { color: black !important; }
+nav.navbar.navbar-dark.bg-company-blue {
+    margin-bottom: 0;
 }

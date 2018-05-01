@@ -1,9 +1,8 @@
 package com.greenfoxacademy.reddit.Controller;
 
-import com.greenfoxacademy.reddit.Model.Pager;
-import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Model.RedditUser;
-import com.greenfoxacademy.reddit.Model.Vote;
+import com.greenfoxacademy.reddit.models.Pager;
+import com.greenfoxacademy.reddit.models.Post;
+import com.greenfoxacademy.reddit.models.RedditUser;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.VoteService;
@@ -11,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;

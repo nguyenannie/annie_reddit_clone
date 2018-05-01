@@ -42,18 +42,24 @@
                         <a href="/login">Sign In</a>
                     </li>
                     <li class="nav-item dropdown" th:if="${user != null}">
-                        <a class="nav-link dropdown-toggle" id="dropdown01"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name}}">Account Info</a></li>
-                            <li><a class="dropdown-item" th:href="@{'/account/' + ${user.name} + '/changepassword'}">Change Password</a></li>
-                            <li>
-                                <!--<a href="/logout">Logout</a>-->
-                                <form th:action="@{/logout}" method="post">
-                                    <input type="submit" value="Sign out"/>
-                                </form>
-                            </li>
-                        </ul>
+                        <!--<a class="nav-link dropdown-toggle" id="dropdown01"-->
+                           <!--data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a class="dropdown-item" th:href="@{'/account?username=' + ${user.name}}">Account Info</a></li>-->
+                            <!--<li><a class="dropdown-item" th:href="@{'/changepassword?username=' + ${user.name}}">Change Password</a></li>-->
+                            <!--<li>-->
+                                <!--&lt;!&ndash;<a href="/logout">Logout</a>&ndash;&gt;-->
+                                <!--<form th:action="@{/logout}" method="post">-->
+                                    <!--<input type="submit" value="Sign out"/>-->
+                                <!--</form>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                        <a class="nav-link" th:href="@{'/mypost?username=' + ${user.name}}">My Account</a>
+                    </li>
+                    <li>
+                        <form th:action="@{/logout}" method="post">
+                            <input type="submit" value="Sign out"/>
+                        </form>
                     </li>
                 </ul>
             </div>

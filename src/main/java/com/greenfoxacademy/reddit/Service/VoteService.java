@@ -1,8 +1,8 @@
 package com.greenfoxacademy.reddit.Service;
 
-import com.greenfoxacademy.reddit.Model.Post;
-import com.greenfoxacademy.reddit.Model.RedditUser;
-import com.greenfoxacademy.reddit.Model.Vote;
+import com.greenfoxacademy.reddit.models.Post;
+import com.greenfoxacademy.reddit.models.RedditUser;
+import com.greenfoxacademy.reddit.models.Vote;
 import org.springframework.stereotype.Service;
 
 @Service

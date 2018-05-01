@@ -1,4 +1,4 @@
-package com.greenfoxacademy.reddit.Model;
+package com.greenfoxacademy.reddit.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;

@@ -1,6 +1,6 @@
 package com.greenfoxacademy.reddit.Controller;
 
-import com.greenfoxacademy.reddit.Model.RedditUser;
+import com.greenfoxacademy.reddit.models.RedditUser;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

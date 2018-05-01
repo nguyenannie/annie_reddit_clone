@@ -1,4 +1,4 @@
-package com.greenfoxacademy.reddit.Model;
+package com.greenfoxacademy.reddit.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
