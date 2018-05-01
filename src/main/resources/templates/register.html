@@ -13,8 +13,8 @@
         <p th:text="${error}"></p>
         <form action="#" th:action="@{/register}" method="post">
             <div><input class="form-control" placeholder="Username..." type="text" name="username"/></div>
-            <div><input class="form-control" placeholder="New Password..." type="text" name="password"/></div>
-            <div><input class="form-control" placeholder="Confirm Password..." type="text" name="confirmpassword"/></div>
+            <div><input class="form-control" placeholder="New Password..." type="password" name="password"/></div>
+            <div><input class="form-control" placeholder="Confirm Password..." type="password" name="confirmpassword"/></div>
             <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
                 <a class="btn btn-danger" role="button" th:href="@{/reddit/welcome}">Cancel</a></div>
         </form>

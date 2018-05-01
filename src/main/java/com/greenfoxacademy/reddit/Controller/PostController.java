@@ -114,9 +114,8 @@ public class PostController {
     }
 
     @GetMapping("/post")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public String getPersonalPostDetail(Model model, HttpServletRequest request,
-                                @RequestParam(value = "username") String username,
+                                @RequestParam(value = "username", required = false) String username,
                                 @RequestParam(value = "postid") String id) {
 
         RedditUser user = userServiceDb.findByName(username);

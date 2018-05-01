@@ -15,19 +15,27 @@
             <div><h3>Content</h3></div>
             <div><p th:text="${post.content}"></p></div>
             <h3>Comments</h3>
-            <form action="#" th:action="@{'/comment?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
+            <form th:if="${user != null}" action="#" th:action="@{'/comment?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
                 <div><input class="form-control" placeholder="Comment..." type="text" name="addcomment"/></div>
                 <div><button class="btn btn-info" type="submit">Comment</button>
                     <a class="btn btn-danger" role="button" th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}">Cancel</a></div>
             </form>
-            <div th:each="comment:${comments}">
-                <div><p th:text="'#' + ${commentStat.index}"></p></div>
+            <div th:if="${user == null}"><p style="color: red">Sign in or register to comment</p></div>
+            <div th:each="comment:${comments}" class="comment-block">
+                <!--<div><p th:text="'#' + ${commentStat.index + 1}"></p></div>-->
                 <div><p th:text="${comment.content}"></p></div>
-                <div><p th:text="'by ' + ${comment.user} + ' at ' + ${comment.creationDate}"></p></div>
+                <div><p th:text="'by ' + ${comment.user} + ' at ' + ${comment.creationDate}" style="font-style: italic"></p></div>
             </div>
         </main>
-    </div>
-<!-- -->
+</div>
+<script>
+    function voteNotSignin() {
+        alert("Please sign in or sign up to vote!");
+    }
+    function createPostNotSignIn() {
+        alert("Please sign in or sign up to create post!");
+    }
+</script>
 <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 </body>

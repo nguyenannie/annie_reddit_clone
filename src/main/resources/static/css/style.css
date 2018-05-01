@@ -92,10 +92,6 @@ h1 {
     text-align: center;
 }
 
-/*body {*/
-    /*background: url("../images/background.png");*/
-/*}*/
-
 .created-by {
     text-align: center;
 }
@@ -103,4 +99,8 @@ h1 {
 ul.nav a:hover { color: black !important; }
 nav.navbar.navbar-dark.bg-company-blue {
     margin-bottom: 0;
+}
+
+.comment-block {
+    margin-top: 20px;
 }

@@ -27,7 +27,7 @@
                         <a class="nav-link" th:href="@{'/?username=' + ${user.name}}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="active" th:if="${user == null}">
-                        <a class="nav-link" th:href="@{''}">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li th:if="${user != null}">
                         <a th:href="@{'/createpost?username=' + ${user.name}}">Create Post</a>
@@ -103,7 +103,7 @@
                             <span class="glyphicon glyphicon-thumbs-down"></span></button></td>
                     </form>
                     <td th:if="${user != null}"><a th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" th:text="${post.title}"></a></td>
-                    <td th:if="${user == null}" th:text="${post.title}"></td>
+                    <td th:if="${user == null}"><a th:href="@{'/post?postid=' + ${post.id}}" th:text="${post.title}"></a></td>
                     <td th:text="${post.creationDate}"></td>
                     <td th:text="${post.user.name}"></td>
                 </tr>
