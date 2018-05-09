@@ -28,9 +28,9 @@
                         <form action="#" th:action="@{'/deleteComment?username=' + ${user.name} + '&amp;commentid=' +  ${mycomment.id}}" method="post">
                             <td><button class="btn btn-danger" type="submit" name="delete" th:value="${mycomment.id}">Delete</button></td>
                         </form>
-                        <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal1">Edit</button></td>
-                        <div class="modal fade" id="myModal1">
-                            <div class="modal-dialog">
+                        <td><button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#commentModal-'+${mycomment.id}">Edit</button></td>
+                        <div class="modal fade" th:attr="id='commentModal-'+${mycomment.id}">
+                            <div class="modal-dialog" th:attr="id='commentModal-' + ${mycomment.id}">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Edit Comment</h4>
@@ -58,5 +58,7 @@
         </div>
     </main>
 </div>
+<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,11 +1,15 @@
 package com.greenfoxacademy.reddit.Service;
 
+import com.greenfoxacademy.reddit.models.Comment;
+import com.greenfoxacademy.reddit.models.Post;
 import com.greenfoxacademy.reddit.models.RedditUser;
 import com.greenfoxacademy.reddit.Repository.RedditUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RedditUserServiceDbImpl implements RedditUserService {

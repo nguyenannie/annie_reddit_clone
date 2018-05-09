@@ -92,10 +92,6 @@ h1 {
     text-align: center;
 }
 
-/*body {*/
-    /*background: url("../images/background.png");*/
-/*}*/
-
 .created-by {
     text-align: center;
 }
@@ -107,4 +103,14 @@ nav.navbar.navbar-dark.bg-company-blue {
 
 .comment-block {
     margin-top: 20px;
+}
+
+.linkButton {
+     margin-top: 14px;
+     background: none;
+     border: none;
+     color: #337ab7;
+     font-size: 14px;
+     cursor: pointer;
+     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }

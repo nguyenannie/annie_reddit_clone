@@ -42,23 +42,11 @@
                         <a href="/login">Sign In</a>
                     </li>
                     <li class="nav-item dropdown" th:if="${user != null}">
-                        <!--<a class="nav-link dropdown-toggle" id="dropdown01"-->
-                           <!--data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>-->
-                        <!--<ul class="dropdown-menu">-->
-                            <!--<li><a class="dropdown-item" th:href="@{'/account?username=' + ${user.name}}">Account Info</a></li>-->
-                            <!--<li><a class="dropdown-item" th:href="@{'/changepassword?username=' + ${user.name}}">Change Password</a></li>-->
-                            <!--<li>-->
-                                <!--&lt;!&ndash;<a href="/logout">Logout</a>&ndash;&gt;-->
-                                <!--<form th:action="@{/logout}" method="post">-->
-                                    <!--<input type="submit" value="Sign out"/>-->
-                                <!--</form>-->
-                            <!--</li>-->
-                        <!--</ul>-->
                         <a class="nav-link" th:href="@{'/mypost?username=' + ${user.name}}">My Account</a>
                     </li>
                     <li>
                         <form th:action="@{/logout}" method="post">
-                            <input type="submit" value="Sign out"/>
+                            <input type="submit" value="Sign Out" class="linkButton"/>
                         </form>
                     </li>
                 </ul>
@@ -105,7 +93,7 @@
                     <td th:if="${user != null}"><a th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" th:text="${post.title}"></a></td>
                     <td th:if="${user == null}"><a th:href="@{'/post?postid=' + ${post.id}}" th:text="${post.title}"></a></td>
                     <td th:text="${post.creationDate}"></td>
-                    <td th:text="${post.user.name}"></td>
+                    <td th:if="${post.user != null}" th:text="${post.user.name}"></td>
                 </tr>
                 </tbody>
             </table>

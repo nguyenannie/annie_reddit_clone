@@ -77,16 +77,18 @@ public class UserController {
 
     @PostMapping("/deletePost")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String deletePost(Model model, @RequestParam(value = "username") String username, @RequestParam(value = "postid") String postid) {
+    public String deletePost(Model model, @RequestParam(value = "username", required = false) String username, @RequestParam(value = "postid") String postid) {
         RedditUser user = userServiceDb.findByName(username);
         Post post = postServiceDb.findOne(Long.parseLong(postid));
-        List<Comment> comments = post.getComments();
+        List<Comment> comments = commentServiceDb.findByPostAndUser(post, user);
 
         for(Comment comment : comments) {
+            user.removeComment(comment);
             commentServiceDb.delete(comment.getId());
         }
-
+        user.removePost(post);
         postServiceDb.delete(Long.parseLong(postid));
+        userServiceDb.save(user);
 
         model.addAttribute("user", user);
         model.addAttribute("post", post);

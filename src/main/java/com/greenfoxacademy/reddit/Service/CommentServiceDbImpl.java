@@ -2,11 +2,16 @@ package com.greenfoxacademy.reddit.Service;
 
 import com.greenfoxacademy.reddit.models.Comment;
 import com.greenfoxacademy.reddit.Repository.CommentRepository;
+import com.greenfoxacademy.reddit.models.Post;
+import com.greenfoxacademy.reddit.models.RedditUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentServiceDbImpl implements CommentService{
+
     private final CommentRepository commentRepository;
 
     @Autowired
@@ -27,6 +32,11 @@ public class CommentServiceDbImpl implements CommentService{
     @Override
     public void delete(long id) {
         commentRepository.delete(id);
+    }
+
+    @Override
+    public List<Comment> findByPostAndUser(Post post, RedditUser user) {
+        return commentRepository.findByPostAndUser(post, user);
     }
 
 }

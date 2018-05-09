@@ -55,9 +55,10 @@
                 <form action="#" th:action="@{'/deletePost?username=' + ${user.name} + '&amp;postid=' +  ${mypost.id}}" method="post">
                     <td><button class="btn btn-danger" type="submit" name="delete" th:value="${mypost.id}">Delete</button></td>
                 </form>
-                <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Edit</button></td>
-                <div class="modal fade" id="myModal">
-                    <div class="modal-dialog">
+                <td><button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#myModal-'+${mypost.id}">Edit</button></td>
+                <!--data-target="#myModal-${mypost.id}-->
+                <div class="modal fade" th:attr="id='myModal-'+${mypost.id}">
+                    <div class="modal-dialog" th:attr="id='myModal-'+${mypost.id}">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title">Edit Post</h4>
