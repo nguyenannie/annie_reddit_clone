@@ -184,4 +184,12 @@ public class RedditUser implements UserDetails {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
 }

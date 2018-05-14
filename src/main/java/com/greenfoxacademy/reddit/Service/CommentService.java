@@ -14,5 +14,6 @@ public interface CommentService {
     Comment findOne(long id);
     void delete(long id);
     List<Comment> findByPostAndUser(Post post, RedditUser user);
+    List<Comment> findByPost(Post post);
 }
 

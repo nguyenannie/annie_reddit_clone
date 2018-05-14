@@ -7,6 +7,8 @@ import com.greenfoxacademy.reddit.Repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VoteServiceDbImpl implements VoteService {
 
@@ -20,6 +22,11 @@ public class VoteServiceDbImpl implements VoteService {
   @Override
   public Vote findByPostAndUser(Post post, RedditUser user) {
     return voteRepository.findByPostAndUser(post, user);
+  }
+
+  @Override
+  public List<Vote> findByPost(Post post) {
+    return voteRepository.findByPost(post);
   }
 
   @Override

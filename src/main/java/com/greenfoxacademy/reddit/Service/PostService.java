@@ -13,5 +13,5 @@ public interface PostService {
     List<Post> findAll();
     Post findOne(long id);
     Page<Post> findByPage(Pageable pageable);
-    void delete(long id);
+    void delete(Post post);
 }

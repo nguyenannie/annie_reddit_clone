@@ -114,8 +114,7 @@ public class PostController {
     }
 
     @GetMapping("/post")
-    public String getPersonalPostDetail(Model model, HttpServletRequest request,
-                                @RequestParam(value = "username", required = false) String username,
+    public String getPersonalPostDetail(Model model, @RequestParam(value = "username", required = false) String username,
                                 @RequestParam(value = "postid") String id) {
 
         RedditUser user = userServiceDb.findByName(username);
@@ -124,15 +123,8 @@ public class PostController {
         Post post = postServiceDb.findOne(Long.parseLong(id));
         model.addAttribute("post", post);
         model.addAttribute("comments", post.getComments());
+        model.addAttribute("voteService", voteService);
         return "postdetail";
     }
 
-//    @GetMapping("/post")
-//    public String getPublicPostDetail(Model model, @RequestParam(value = "postid") String id) {
-//
-//        Post post = postServiceDb.findOne(Long.parseLong(id));
-//        model.addAttribute("post", post);
-//        model.addAttribute("comments", post.getComments());
-//        return "postdetail";
-//    }
 }

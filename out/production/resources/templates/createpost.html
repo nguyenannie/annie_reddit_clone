@@ -6,19 +6,109 @@
     <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
     <meta charset="utf-8" />
 </head>
-<body>
+<body class="createpost-body">
 <div th:replace="home :: header"></div>
-<main class="createpost fillin">
-    <div class="container-fluid">
-        <h1>Create New Post</h1>
-        <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
-            <div><input class="form-control" placeholder="Title..." type="text" name="addtitle"/></div>
-            <div><input class="form-control" placeholder="Content..." type="text" name="addcontent"/></div>
-            <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
-                <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
-        </form>
+<div class="createpost-container">
+    <div style="flex-grow: 10">
+        <main class="createpost fillin">
+            <div class="container-fluid">
+                <h1>Create New Post</h1>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="tab-cover">
+                    <div class="active tab-title">
+                        <div class="image-in-tab">
+                            <img class="img-itself" th:src="@{/images/text-icon.svg}"/>
+                        </div>
+                        <a data-toggle="tab" href="#home">Post</a>
+                    </div>
+                </li>
+                <li class="tab-cover">
+                    <div class="active tab-title">
+                        <div class="image-in-tab">
+                            <img class="img-itself" th:src="@{/images/link-icon.png}"/>
+                        </div>
+                        <a data-toggle="tab" href="#menu1">Link</a>
+                    </div>
+                </li>
+                <li class="tab-cover">
+                    <div class="active tab-title">
+                        <div class="image-in-tab">
+                            <img class="img-itself" th:src="@{/images/image-icon.png}"/>
+                        </div>
+                        <a data-toggle="tab" href="#menu2">Image</a>
+                    </div>
+                </li>
+                <li class="tab-cover">
+                    <div class="active tab-title">
+                        <div class="image-in-tab">
+                            <img class="img-itself" th:src="@{/images/video-icon.png}"/>
+                        </div>
+                        <a data-toggle="tab" href="#menu3">Video</a>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
+                        <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
+                        <div><input class="form-control" placeholder="Content..." type="text" name="addcontent"/></div>
+                        <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
+                            <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
+                    </form>
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
+                        <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
+                        <div><input class="form-control" placeholder="Link to external source..." type="text" name="addcontent"/></div>
+                        <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
+                            <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
+                    </form>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
+                        <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
+                        <div><input class="form-control" placeholder="Link to image..." type="text" name="addcontent"/></div>
+                        <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
+                            <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
+                    </form>
+                </div>
+                <div id="menu3" class="tab-pane fade">
+                    <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
+                        <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
+                        <div><input class="form-control" placeholder="Link to video..." type="text" name="addcontent"/></div>
+                        <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
+                            <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
+                    </form>
+                </div>
+            </div>
+        </main>
     </div>
-</main>
+    <div class="side-column" style="flex-grow: 5">
+        <div class="first-side-item"></div>
+        <div class="home-user side-item">
+            <div id="deco-title">
+                <div id="reddit-icon">
+                    <img style="width:50px;height:60px;" src="http://i.imgur.com/O1HZ1.jpg" />
+                </div>
+                <div>
+                    <h3>Rules to post on CatWorld</h3>
+                </div>
+            </div>
+            <ul>
+                <li>Remember the human</li>
+                <li>Behave like you would in real life</li>
+                <li>Look for the original source of content</li>
+                <li>Search for duplicates before posting</li>
+                <li>Read the community’s rules</li>
+            </ul>
+        </div>
+        <div class="hot-news side-item">
+            Your personal Reddit frontpage. Come here to check in with your favorite communities.
+        </div>
+    </div>
+</div>
 <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 </body>

@@ -8,35 +8,136 @@
 </head>
 <body>
 <div th:replace="home :: header"></div>
-<div class="container-fluid">
-       <main role="main">
-            <h1 th:text="'Post: ' + ${post.title}"></h1>
-            <div><h5 th:text="'Created by ' + ${post.user} + ' at ' + ${post.creationDate}"></h5></div>
-            <div><h3>Content</h3></div>
-            <div><p th:text="${post.content}"></p></div>
-            <h3>Comments</h3>
-            <form th:if="${user != null}" action="#" th:action="@{'/comment?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
-                <div><input class="form-control" placeholder="Comment..." type="text" name="addcomment"/></div>
-                <div><button class="btn btn-info" type="submit">Comment</button>
-                    <a class="btn btn-danger" role="button" th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}">Cancel</a></div>
-            </form>
-            <div th:if="${user == null}"><p style="color: red">Sign in or register to comment</p></div>
-            <div th:each="comment:${comments}" class="comment-block">
-                <!--<div><p th:text="'#' + ${commentStat.index + 1}"></p></div>-->
-                <div><p th:text="${comment.content}"></p></div>
-                <div><p th:text="'by ' + ${comment.user} + ' at ' + ${comment.creationDate}" style="font-style: italic"></p></div>
+<!--<div class="container-fluid">-->
+       <!--<main role="main">-->
+            <!--<h1 th:text="'Post: ' + ${post.title}"></h1>-->
+            <!--<div><h5 th:text="'Created by ' + ${post.user} + ' at ' + ${post.creationDate}"></h5></div>-->
+            <!--<div><h3>Content</h3></div>-->
+            <!--<div><p th:text="${post.content}"></p></div>-->
+            <!--<p th:if="${user != null}" th:text="'Comment as ' + ${user.name}"></p>-->
+            <!--<form id="comment" th:if="${user != null}" action="#" th:action="@{'/comment?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">-->
+                <!--<div class="comment-input">-->
+                    <!--<textarea name="addcomment" form="comment" placeholder="What are your thoughts?"></textarea>-->
+                    <!--<div class="submit-cancel">-->
+                        <!--<input type="submit" name="addcomment" class="btn btn-info" value="Comment"/>-->
+                        <!--<a class="btn btn-danger" role="button" th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}">Cancel</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</form>-->
+            <!--<div th:if="${user == null}"><p style="color: red">Sign in or register to comment</p></div>-->
+            <!--<div th:each="comment:${comments}" class="comment-block">-->
+                <!--<div><p th:text="${comment.content}"></p></div>-->
+                <!--<div><p th:text="'by ' + ${comment.user} + ' at ' + ${comment.creationDate}" style="font-style: italic"></p></div>-->
+            <!--</div>-->
+        <!--</main>-->
+<!--</div>-->
+<div class="postdetail-container">
+    <div class="postdetail" style="flex-grow: 10">
+        <div class="title-postdetail">
+            <div class="vote-content-postdetail" th:with="vote=${voteService.findByPostAndUser(post, user)}">
+                <div th:if="${user == null}">
+                    <div class="tooltip-wrapper disabled" data-title="Please login or sing up to vote!">
+                        <button class="btn" name="upvote" disabled = "disabled"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                    </div>
+                </div>
+                <form th:if="${user != null}" action="#" th:action="@{'/upvote?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
+                    <button th:if="${vote == null or vote.vote == -1}" class="btn" type="submit" name="upvote" th:value="${post.id}">
+                        <span class="glyphicon glyphicon-thumbs-up"></span></button>
+                    <button th:if="${vote != null and vote.vote == 1}" class="btn btn-success" type="submit" name="upvote" th:value="${post.id}">
+                        <span class="glyphicon glyphicon-thumbs-up"></span></button>
+                </form>
+                <div class="vote-score" th:text="${post.score}"></div>
+                <div th:if="${user == null}">
+                    <div class="tooltip-wrapper disabled" data-title="Please login or sing up to vote!">
+                        <button class="btn" name="downvote" disabled = "disabled"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+                    </div>
+                </div>
+                <form th:if="${user != null}" action="#" th:action="@{'/downvote?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
+                    <div th:if="${vote == null or vote.vote == 1}"><button class="btn" type="submit" name="downvote" th:value="${post.id}">
+                        <span class="glyphicon glyphicon-thumbs-down"></span></button></div>
+                    <div th:if="${vote != null and vote.vote == -1}"><button class="btn btn-danger" type="submit" name="downvote" th:value="${post.id}">
+                        <span class="glyphicon glyphicon-thumbs-down"></span></button></div>
+                </form>
             </div>
-        </main>
+            <div class="title-info-postdetail">
+                <div><p id="author-time" th:text="'Posted by ' + ${post.user} + ' at ' + ${post.creationDate}"></p></div>
+                <div th:if="${post.link == null or post.videoUrl != null}"><h3 id="post-title" th:text="${post.title}"></h3></div>
+                <div th:if="${post.link != null and post.videoUrl == null}"><a class="title-link" th:href="@{${post.link}}" th:text="${post.title}" target="_blank"></a></div>
+                <div th:if="${post.imageUrl == null and post.videoUrl == null}"><p th:text="'“ ' + ${post.content} + ' ”'"></p></div>
+                <div th:if="${post.imageUrl != null and post.videoUrl == null}">
+                    <div class="postdetail-image-container">
+                        <img class="img-itself" th:src="@{${post.imageUrl}}"/>
+                    </div>
+                </div>
+                <div th:if="${post.videoUrl != null}" class="embed-responsive embed-responsive-16by9 video-post">
+                    <!--<iframe class="embed-responsive-item" th:src="@{${post.videoUrl}}" allowfullscreen = "allowfullscreen"></iframe>-->
+                    <embed th:src="@{${post.videoUrl}}" allowfullscreen = "allowfullscreen"/>
+                </div>
+            </div>
+        </div>
+        <div class="comment-postdetail">
+            <p th:if="${user != null}" th:text="'Comment as ' + ${user.name}"></p>
+            <form id="comment" th:if="${user != null}" action="#" th:action="@{'/comment?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" method="post">
+                <div class="comment-input">
+                    <textarea name="addcomment" id="addcomment" form="comment" placeholder="What are your thoughts?"></textarea>
+                    <div class="submit-cancel">
+                        <input type="submit" name="addcomment" class="btn btn-info" value="Comment"/>
+                        <a class="btn btn-danger" role="button" th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}">Cancel</a>
+                    </div>
+                </div>
+            </form>
+            <div th:if="${user == null}" class="create-an-account-to-comment span4">
+                <h3>Want to add to the discussion?</h3>
+                <p>Post a comment!</p>
+                <a class="btn btn-primary" href="/register">CREATE AN ACCOUNT</a>
+            </div>
+            <div th:each="comment:${comments}" class="comment-block">
+                <div class="author-time-postdetail" th:if="${user == null}">
+                    <a class="author-link-postdetail" th:text="${comment.user}" th:href= "@{'/user/posts?authorname=' + ${comment.user.name}}"></a>
+                    <p th:text="'at ' + ${comment.creationDate}" style="font-style: italic; color: grey;"></p>
+                </div>
+                <div class="author-time-postdetail" th:if="${user != null}">
+                    <a class="author-link-postdetail" th:text="${comment.user}" th:href= "@{'/user/posts?authorname=' + ${comment.user.name} + '&amp;username=' + ${user.name}}"></a>
+                    <p th:text="'at ' + ${comment.creationDate}" style="font-style: italic; color: grey;"></p>
+                </div>
+                <div><div th:text="${comment.content}" th:attr="id='comment-content' + ${commentStat.index}"></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="side-column" style="flex-grow: 3">
+        <div class="home-user side-item">
+            <div id="deco-title">
+                <div id="reddit-icon">
+                    <img style="width:50px;height:60px;" src="http://i.imgur.com/O1HZ1.jpg" />
+                </div>
+                <div>
+                    <h3>Home</h3>
+                </div>
+            </div>
+            <div>Your personal Reddit frontpage. Come here to check in with your favorite communities. </div>
+            <div th:if="${user != null}">
+                <a class="btn btn-warning create-post-button btn-block" th:href="@{'/createpost?username=' + ${user.name}}">Create Post</a>
+            </div>
+            <div th:if="${user == null}">
+                <a class="btn btn-warning create-post-button btn-block" onclick="createPostNotSignIn()">Create Post</a>
+            </div>
+        </div>
+        <div class="hot-news side-item">
+            Your personal Reddit frontpage. Come here to check in with your favorite communities.
+        </div>
+    </div>
 </div>
+<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/markdown-it@8.4.1/dist/markdown-it.min.js"></script>
+</body>
 <script>
-    function voteNotSignin() {
-        alert("Please sign in or sign up to vote!");
-    }
     function createPostNotSignIn() {
         alert("Please sign in or sign up to create post!");
     }
+    $(function() {
+        $('.tooltip-wrapper').tooltip({position: "bottom"});
+    });
 </script>
-<script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
-<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
-</body>
+<script src="/js/markdown.js"></script>
 </html>

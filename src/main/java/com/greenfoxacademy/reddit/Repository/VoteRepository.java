@@ -6,7 +6,12 @@ import com.greenfoxacademy.reddit.models.Vote;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface VoteRepository extends CrudRepository<Vote, Long> {
+
   Vote findByPostAndUser(Post post, RedditUser user);
+  List<Vote> findByPost(Post post);
+
 }

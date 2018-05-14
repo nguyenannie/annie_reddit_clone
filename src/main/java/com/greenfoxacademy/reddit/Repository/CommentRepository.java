@@ -12,5 +12,6 @@ import java.util.List;
 public interface CommentRepository extends CrudRepository<Comment, Long> {
 
     List<Comment> findByPostAndUser(Post post, RedditUser user);
+    List<Comment> findByPost(Post post);
 
 }

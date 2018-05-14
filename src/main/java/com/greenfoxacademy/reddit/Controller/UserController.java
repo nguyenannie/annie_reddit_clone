@@ -1,11 +1,13 @@
 package com.greenfoxacademy.reddit.Controller;
 
+import com.greenfoxacademy.reddit.Service.VoteService;
 import com.greenfoxacademy.reddit.models.Comment;
 import com.greenfoxacademy.reddit.models.Post;
 import com.greenfoxacademy.reddit.models.RedditUser;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
+import com.greenfoxacademy.reddit.models.Vote;
 import com.greenfoxacademy.reddit.models.forms.PostForm;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class UserController {
     private final CommentServiceDbImpl commentServiceDb;
     private final PostServiceDbImpl postServiceDb;
     private final RedditUserServiceDbImpl userServiceDb;
+    @Autowired
+    VoteService voteService;
 
     @Autowired
     public UserController(CommentServiceDbImpl commentServiceDb, PostServiceDbImpl postServiceDb, RedditUserServiceDbImpl userServiceDb) {
@@ -33,31 +37,47 @@ public class UserController {
         this.userServiceDb = userServiceDb;
     }
 
-    @GetMapping("/mypost")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String getPosts(Model model, @RequestParam(value = "username") String username) {
+    @GetMapping("/user/posts")
+    public String getPosts(Model model, @RequestParam(value = "username", required = false) String username,
+                           @RequestParam(value = "authorname", required = false) String authorname) {
         RedditUser user = userServiceDb.findByName(username);
-
-        model.addAttribute("myposts", user.getPosts());
-        model.addAttribute("postnum", user.getPosts().size());
-        model.addAttribute("mycomments", user.getComments());
-        model.addAttribute("commentnum", user.getComments().size());
+        RedditUser author = userServiceDb.findByName(authorname);
+        if (author != null) {
+            model.addAttribute("myposts", author.getPosts());
+            model.addAttribute("postnum", author.getPosts().size());
+            model.addAttribute("mycomments", author.getComments());
+            model.addAttribute("commentnum", author.getComments().size());
+        } else if (user != null) {
+            model.addAttribute("myposts", user.getPosts());
+            model.addAttribute("postnum", user.getPosts().size());
+            model.addAttribute("mycomments", user.getComments());
+            model.addAttribute("commentnum", user.getComments().size());
+        }
         model.addAttribute("user", user);
+        model.addAttribute("author", author);
         model.addAttribute("postForm", new PostForm("", ""));
 
         return "mypost";
     }
 
-    @GetMapping("/mycomment")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String getComments(Model model, @RequestParam(value = "username") String username) {
+    @GetMapping("/user/comments")
+    public String getComments(Model model, @RequestParam(value = "username", required = false) String username,
+                              @RequestParam(value = "authorname", required = false) String authorname) {
         RedditUser user = userServiceDb.findByName(username);
-
-        model.addAttribute("myposts", user.getPosts());
-        model.addAttribute("postnum", user.getPosts().size());
-        model.addAttribute("mycomments", user.getComments());
-        model.addAttribute("commentnum", user.getComments().size());
+        RedditUser author = userServiceDb.findByName(authorname);
+        if (author != null) {
+            model.addAttribute("myposts", author.getPosts());
+            model.addAttribute("postnum", author.getPosts().size());
+            model.addAttribute("mycomments", author.getComments());
+            model.addAttribute("commentnum", author.getComments().size());
+        } else if (user != null) {
+            model.addAttribute("myposts", user.getPosts());
+            model.addAttribute("postnum", user.getPosts().size());
+            model.addAttribute("mycomments", user.getComments());
+            model.addAttribute("commentnum", user.getComments().size());
+        }
         model.addAttribute("user", user);
+        model.addAttribute("author", author);
         return "mycomment";
     }
 
@@ -72,7 +92,7 @@ public class UserController {
         commentServiceDb.save(comment);
         model.addAttribute("comment", comment);
         model.addAttribute("user", user);
-        return "redirect:/mycomment?username=" + username;
+        return "redirect:/user/comments?username=" + username;
     }
 
     @PostMapping("/deletePost")
@@ -80,20 +100,25 @@ public class UserController {
     public String deletePost(Model model, @RequestParam(value = "username", required = false) String username, @RequestParam(value = "postid") String postid) {
         RedditUser user = userServiceDb.findByName(username);
         Post post = postServiceDb.findOne(Long.parseLong(postid));
-        List<Comment> comments = commentServiceDb.findByPostAndUser(post, user);
+        List<Comment> comments = commentServiceDb.findByPost(post);
+        List<Vote> votes = voteService.findByPost(post);
 
         for(Comment comment : comments) {
-            user.removeComment(comment);
             commentServiceDb.delete(comment.getId());
         }
-        user.removePost(post);
-        postServiceDb.delete(Long.parseLong(postid));
-        userServiceDb.save(user);
+
+        for (Vote vote : votes) {
+            voteService.delete(vote);
+        }
+//
+//        user.removePost(post);
+//        userServiceDb.save(user);
+        postServiceDb.delete(post);
 
         model.addAttribute("user", user);
         model.addAttribute("post", post);
 
-        return "redirect:/mypost?username=" + username;
+        return "redirect:/user/posts?username=" + username;
     }
 
     @PostMapping("/editPost")
@@ -107,7 +132,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("post", post);
 
-        return "redirect:/mypost?username=" + username;
+        return "redirect:/user/posts?username=" + username;
     }
 
     @PostMapping("/deleteComment")
@@ -123,7 +148,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("comment", comment);
 
-        return "redirect:/mycomment?username=" + username;
+        return "redirect:/user/comments?username=" + username;
     }
 
     @GetMapping("/changepassword")
@@ -150,7 +175,7 @@ public class UserController {
         if(newPassword != null && newPassword.equals(confirmPassword) && !newPassword.equals(user.getPassword())) {
             user.setPassword(newPassword);
             userServiceDb.save(user);
-            result = "redirect:/mypost?username=" + username;
+            result = "redirect:/user/posts?username=" + username;
         } else {
             result = "cantchangeit";
         }

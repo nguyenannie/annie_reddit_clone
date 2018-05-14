@@ -42,7 +42,7 @@ public class PostServiceDbImpl implements PostService {
     }
 
     @Override
-    public void delete(long id) {
-        postRepository.delete(id);
+    public void delete(Post post) {
+        postRepository.delete(post.getId());
     }
 }

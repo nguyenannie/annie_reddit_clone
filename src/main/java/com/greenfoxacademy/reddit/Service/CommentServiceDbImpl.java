@@ -39,4 +39,9 @@ public class CommentServiceDbImpl implements CommentService{
         return commentRepository.findByPostAndUser(post, user);
     }
 
+    @Override
+    public List<Comment> findByPost(Post post) {
+        return commentRepository.findByPost(post);
+    }
+
 }

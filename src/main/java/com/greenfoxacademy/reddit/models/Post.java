@@ -14,6 +14,9 @@ public class Post {
     private String title;
     private String content;
     private String creationDate;
+    private String link;
+    private String imageUrl;
+    private String videoUrl;
     private int score;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
@@ -143,5 +146,29 @@ public class Post {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 }
