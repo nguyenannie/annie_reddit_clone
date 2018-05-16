@@ -1,8 +1,8 @@
 package com.greenfoxacademy.reddit.Controller;
 
-import com.greenfoxacademy.reddit.models.Post;
-import com.greenfoxacademy.reddit.models.RedditUser;
-import com.greenfoxacademy.reddit.models.Vote;
+import com.greenfoxacademy.reddit.models.entities.Post;
+import com.greenfoxacademy.reddit.models.entities.RedditUser;
+import com.greenfoxacademy.reddit.models.entities.Vote;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
@@ -100,10 +100,23 @@ public class PostController {
 
         String title = request.getParameter("addtitle");
         String content = request.getParameter("addcontent");
+        String link = request.getParameter("addLink");
+        String imageUrl = request.getParameter("addImageUrl");
+        String videoUrl = request.getParameter("addVideoUrl");
+        String videoThumbnail = "/images/video-icon.png";
 
+        if (videoUrl != null && videoUrl.contains("youtube")) {
+            String videoId = videoUrl.split("\\?v=")[1];
+            videoUrl = "https://www.youtube.com/embed/" + videoId;
+            videoThumbnail = "https://img.youtube.com/vi/" + videoId + "/0.jpg";
+        }
         Post newPost = new Post();
         newPost.setTitle(title);
         newPost.setContent(content);
+        newPost.setImageUrl(imageUrl);
+        newPost.setLink(link);
+        newPost.setVideoUrl(videoUrl);
+        newPost.setVideoThumbnail(videoThumbnail);
         user.addPost(newPost);
         newPost.setUser(user);
 

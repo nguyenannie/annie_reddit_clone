@@ -1,6 +1,6 @@
 package com.greenfoxacademy.reddit.Service;
 
-import com.greenfoxacademy.reddit.models.Post;
+import com.greenfoxacademy.reddit.models.entities.Post;
 import com.greenfoxacademy.reddit.Repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

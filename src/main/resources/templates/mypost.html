@@ -36,7 +36,7 @@
                         <a class="nav-link" th:href="@{'/user/comments?authorname=' + ${author.name}}">Comments</a>
                     </li>
                     <li th:if="${user != null and author != null}">
-                        <a class="nav-link" th:href="@{'/user/comments?authorname=' + ${author.name} + '&amp;username=' + ${user.name}}">Comments</a>
+                        <a class="nav-link" th:href="@{'/user/comments?authorname=' + ${author`.name} + '&amp;username=' + ${user.name}}">Comments</a>
                     </li>
                     <li th:if="${author == null}">
                         <a class="nav-link" th:href="@{'/user/comments?username=' + ${user.name}}">Comments</a>
@@ -61,7 +61,19 @@
                     <div class="content-container">
                         <div class="content-inner-container">
                             <div class="thumbnail">
-                                <img src="https://i.imgur.com/gdWIxn2.jpg" alt="Smiley face" height="42" width="42"/>
+                                <!--<img src="https://i.imgur.com/gdWIxn2.jpg" alt="Smiley face" height="42" width="42"/>-->
+                                <div th:if="${post.imageUrl == null and post.link == null and post.videoUrl == null}" class="image-in-post">
+                                    <img class="img-itself" th:src="@{/images/text-icon.svg}"/>
+                                </div>
+                                <div th:if="${post.imageUrl == null and post.link != null and post.videoUrl == null}" class="image-in-post">
+                                    <img class="img-itself" th:src="@{/images/link-icon.png}"/>
+                                </div>
+                                <div th:if="${post.imageUrl != null}" class="image-in-post">
+                                    <img class="img-itself" th:src="@{${post.imageUrl}}"/>
+                                </div>
+                                <div th:if="${post.videoUrl != null}" class="image-in-post">
+                                    <img class="img-itself" th:src="@{${post.videoThumbnail}}"/>
+                                </div>
                             </div>
                             <div class="text-content">
                                 <div class="title" th:if="${user != null}"><a th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" th:text="${post.title}"></a></div>

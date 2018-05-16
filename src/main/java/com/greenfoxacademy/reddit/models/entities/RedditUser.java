@@ -1,4 +1,4 @@
-package com.greenfoxacademy.reddit.models;
+package com.greenfoxacademy.reddit.models.entities;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,11 +15,17 @@ public class RedditUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    private String password;
+
     @Column(unique = true, nullable = false)
     private String name;
-    private String password;
+
     @Column(nullable = false)
     private boolean enabled;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<SubReddit> subReddits;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Comment> comments;
@@ -191,5 +197,13 @@ public class RedditUser implements UserDetails {
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
+    }
+
+    public List<SubReddit> getSubReddits() {
+        return subReddits;
+    }
+
+    public void setSubReddits(List<SubReddit> subReddits) {
+        this.subReddits = subReddits;
     }
 }

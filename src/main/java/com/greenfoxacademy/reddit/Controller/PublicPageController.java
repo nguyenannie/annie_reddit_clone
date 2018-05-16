@@ -1,6 +1,6 @@
 package com.greenfoxacademy.reddit.Controller;
 
-import com.greenfoxacademy.reddit.models.Post;
+import com.greenfoxacademy.reddit.models.entities.Post;
 import com.greenfoxacademy.reddit.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

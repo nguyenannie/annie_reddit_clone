@@ -1,8 +1,8 @@
 package com.greenfoxacademy.reddit.Controller;
 
-import com.greenfoxacademy.reddit.models.Pager;
-import com.greenfoxacademy.reddit.models.Post;
-import com.greenfoxacademy.reddit.models.RedditUser;
+import com.greenfoxacademy.reddit.models.entities.Pager;
+import com.greenfoxacademy.reddit.models.entities.Post;
+import com.greenfoxacademy.reddit.models.entities.RedditUser;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.VoteService;

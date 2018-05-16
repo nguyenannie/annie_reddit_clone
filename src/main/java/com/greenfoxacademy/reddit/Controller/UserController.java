@@ -1,13 +1,13 @@
 package com.greenfoxacademy.reddit.Controller;
 
 import com.greenfoxacademy.reddit.Service.VoteService;
-import com.greenfoxacademy.reddit.models.Comment;
-import com.greenfoxacademy.reddit.models.Post;
-import com.greenfoxacademy.reddit.models.RedditUser;
+import com.greenfoxacademy.reddit.models.entities.Comment;
+import com.greenfoxacademy.reddit.models.entities.Post;
+import com.greenfoxacademy.reddit.models.entities.RedditUser;
 import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
-import com.greenfoxacademy.reddit.models.Vote;
+import com.greenfoxacademy.reddit.models.entities.Vote;
 import com.greenfoxacademy.reddit.models.forms.PostForm;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

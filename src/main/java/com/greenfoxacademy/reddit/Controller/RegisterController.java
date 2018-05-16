@@ -1,7 +1,7 @@
 package com.greenfoxacademy.reddit.Controller;
 
-import com.greenfoxacademy.reddit.models.RedditUser;
-import com.greenfoxacademy.reddit.models.Role;
+import com.greenfoxacademy.reddit.models.entities.RedditUser;
+import com.greenfoxacademy.reddit.models.entities.Role;
 import com.greenfoxacademy.reddit.Service.RoleServiceDbImpl;
 import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;

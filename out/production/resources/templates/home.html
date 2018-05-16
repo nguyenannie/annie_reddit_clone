@@ -145,14 +145,17 @@
                 <div class="content-container">
                     <div class="content-inner-container">
                         <div class="thumbnail">
-                            <div th:if="${post.imageUrl == null and post.link == null}" class="image-in-post">
+                            <div th:if="${post.imageUrl == null and post.link == null and post.videoUrl == null}" class="image-in-post">
                                 <img class="img-itself" th:src="@{/images/text-icon.svg}"/>
                             </div>
-                            <div th:if="${post.imageUrl == null and post.link != null}" class="image-in-post">
+                            <div th:if="${post.imageUrl == null and post.link != null and post.videoUrl == null}" class="image-in-post">
                                 <img class="img-itself" th:src="@{/images/link-icon.png}"/>
                             </div>
                             <div th:if="${post.imageUrl != null}" class="image-in-post">
                                 <img class="img-itself" th:src="@{${post.imageUrl}}"/>
+                            </div>
+                            <div th:if="${post.videoUrl != null}" class="image-in-post">
+                                <img class="img-itself" th:src="@{${post.videoThumbnail}}"/>
                             </div>
                         </div>
                         <div class="text-content">

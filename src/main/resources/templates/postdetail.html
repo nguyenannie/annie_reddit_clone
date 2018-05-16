@@ -63,7 +63,7 @@
                 <div><p id="author-time" th:text="'Posted by ' + ${post.user} + ' at ' + ${post.creationDate}"></p></div>
                 <div th:if="${post.link == null or post.videoUrl != null}"><h3 id="post-title" th:text="${post.title}"></h3></div>
                 <div th:if="${post.link != null and post.videoUrl == null}"><a class="title-link" th:href="@{${post.link}}" th:text="${post.title}" target="_blank"></a></div>
-                <div th:if="${post.imageUrl == null and post.videoUrl == null}"><p th:text="'“ ' + ${post.content} + ' ”'"></p></div>
+                <div th:if="${post.imageUrl == null and post.videoUrl == null and post.link == null}"><p th:text="'“ ' + ${post.content} + ' ”'"></p></div>
                 <div th:if="${post.imageUrl != null and post.videoUrl == null}">
                     <div class="postdetail-image-container">
                         <img class="img-itself" th:src="@{${post.imageUrl}}"/>

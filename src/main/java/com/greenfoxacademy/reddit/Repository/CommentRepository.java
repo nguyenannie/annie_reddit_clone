@@ -1,8 +1,8 @@
 package com.greenfoxacademy.reddit.Repository;
 
-import com.greenfoxacademy.reddit.models.Comment;
-import com.greenfoxacademy.reddit.models.Post;
-import com.greenfoxacademy.reddit.models.RedditUser;
+import com.greenfoxacademy.reddit.models.entities.Comment;
+import com.greenfoxacademy.reddit.models.entities.Post;
+import com.greenfoxacademy.reddit.models.entities.RedditUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

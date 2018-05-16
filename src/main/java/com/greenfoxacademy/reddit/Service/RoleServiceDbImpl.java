@@ -1,6 +1,6 @@
 package com.greenfoxacademy.reddit.Service;
 
-import com.greenfoxacademy.reddit.models.Role;
+import com.greenfoxacademy.reddit.models.entities.Role;
 import com.greenfoxacademy.reddit.Repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

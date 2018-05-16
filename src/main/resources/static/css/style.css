@@ -516,6 +516,9 @@ a:link {
     background-color: #DAE0E6;
 }
 
+body {
+    background-color: #DAE0E6;
+}
 .createpost {
     background-color: white;
     margin-top: 10%;
@@ -527,4 +530,8 @@ a:link {
 .createpost-container {
     display: flex;
     flex-direction: row;
+}
+
+h3#post-title {
+   margin-bottom: 20px;
 }

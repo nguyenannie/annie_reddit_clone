@@ -61,7 +61,7 @@
                 <div id="menu1" class="tab-pane fade">
                     <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
                         <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
-                        <div><input class="form-control" placeholder="Link to external source..." type="text" name="addcontent"/></div>
+                        <div><input class="form-control" placeholder="Link to external source..." type="text" name="addLink"/></div>
                         <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
                             <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
                     </form>
@@ -69,7 +69,7 @@
                 <div id="menu2" class="tab-pane fade">
                     <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
                         <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
-                        <div><input class="form-control" placeholder="Link to image..." type="text" name="addcontent"/></div>
+                        <div><input class="form-control" placeholder="Link to image..." type="text" name="addImageUrl"/></div>
                         <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
                             <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
                     </form>
@@ -77,7 +77,7 @@
                 <div id="menu3" class="tab-pane fade">
                     <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
                         <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
-                        <div><input class="form-control" placeholder="Link to video..." type="text" name="addcontent"/></div>
+                        <div><input class="form-control" placeholder="Link to video..." type="text" name="addVideoUrl"/></div>
                         <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
                             <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
                     </form>
@@ -106,6 +106,7 @@
         </div>
         <div class="hot-news side-item">
             Your personal Reddit frontpage. Come here to check in with your favorite communities.
+            <a th:href="@{'/subreddit?username=' + ${user.name}}">Create subreddit</a>
         </div>
     </div>
 </div>

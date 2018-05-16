@@ -1,4 +1,4 @@
-package com.greenfoxacademy.reddit.models;
+package com.greenfoxacademy.reddit.models.entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,7 +17,12 @@ public class Post {
     private String link;
     private String imageUrl;
     private String videoUrl;
+    private String videoThumbnail;
     private int score;
+
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
+    @JoinColumn(name = "subReddit_id")
+    private SubReddit subReddit;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
     @JoinColumn(name = "user_id")
@@ -170,5 +175,21 @@ public class Post {
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+    }
+
+    public String getVideoThumbnail() {
+        return videoThumbnail;
+    }
+
+    public void setVideoThumbnail(String videoThumbnail) {
+        this.videoThumbnail = videoThumbnail;
+    }
+
+    public SubReddit getSubReddit() {
+        return subReddit;
+    }
+
+    public void setSubReddit(SubReddit subReddit) {
+        this.subReddit = subReddit;
     }
 }
