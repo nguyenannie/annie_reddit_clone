@@ -36,7 +36,7 @@
                         <a class="nav-link" th:href="@{'/user/comments?authorname=' + ${author.name}}">Comments</a>
                     </li>
                     <li th:if="${user != null and author != null}">
-                        <a class="nav-link" th:href="@{'/user/comments?authorname=' + ${author`.name} + '&amp;username=' + ${user.name}}">Comments</a>
+                        <a class="nav-link" th:href="@{'/user/comments?authorname=' + ${author.name} + '&amp;username=' + ${user.name}}">Comments</a>
                     </li>
                     <li th:if="${author == null}">
                         <a class="nav-link" th:href="@{'/user/comments?username=' + ${user.name}}">Comments</a>

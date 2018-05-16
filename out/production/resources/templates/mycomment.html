@@ -34,6 +34,7 @@
                     <div class="comment-part-container-1">1</div>
                     <div class="comment-part-container-2">
                         <div id="comment-mycomment">
+                            <div><div style="font-style: italic; color: grey;" th:text="'commented by ' + ${comment.user.name} + ' at ' + ${comment.creationDate}"></div></div>
                             <div><div th:text="${comment.content}" th:attr="id='mycomment-content' + ${commentStat.index}"></div></div>
                         </div>
                         <div class="mycomment-edit-delete">
