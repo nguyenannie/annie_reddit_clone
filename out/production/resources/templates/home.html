@@ -133,12 +133,12 @@
                                         <div th:if = "${user == null}" class="extra-info">Posted by
                                             <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}}" th:text="${post.user.name}"></a>
                                             at <span th:text="${post.creationDate}"></span>
-                                            in <a th:href="@{'/subReddit?subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
+                                            in <a th:if="${post.subReddit != null}" th:href="@{'/subReddit?subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
                                         </div>
                                         <div th:if = "${user != null}" class="extra-info">Posted by
                                             <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}} + '&amp;username=' + ${user.name}" th:text="${post.user.name}"></a>
                                             at <span th:text="${post.creationDate}"></span>
-                                            in <a th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
+                                            in <a th:if="${post.subReddit != null}" th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
                                         </div>
                                         <div class="comment-info" th:text="${post.getComments().size()} + ' comments'"></div>
                                     </div>
@@ -238,12 +238,12 @@
                                         <div th:if = "${user == null}" class="extra-info">Posted by
                                             <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}}" th:text="${post.user.name}"></a>
                                             at <span th:text="${post.creationDate}"></span>
-                                            in <a th:href="@{'/subReddit?subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
+                                            in <a th:if="${post.subReddit != null}" th:href="@{'/subReddit?subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
                                         </div>
                                         <div th:if = "${user != null}" class="extra-info">Posted by
                                             <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}} + '&amp;username=' + ${user.name}" th:text="${post.user.name}"></a>
                                             at <span th:text="${post.creationDate}"></span>
-                                            in <a th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
+                                            in <a th:if="${post.subReddit != null}" th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
                                         </div>
                                         <div class="comment-info" th:text="${post.getComments().size()} + ' comments'"></div>
                                     </div>
@@ -343,12 +343,12 @@
                                         <div th:if = "${user == null}" class="extra-info">Posted by
                                             <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}}" th:text="${post.user.name}"></a>
                                             at <span th:text="${post.creationDate}"></span>
-                                            in <a th:href="@{'/subReddit?subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
+                                            in <a th:if="${post.subReddit != null}" th:href="@{'/subReddit?subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
                                         </div>
                                         <div th:if = "${user != null}" class="extra-info">Posted by
                                             <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}} + '&amp;username=' + ${user.name}" th:text="${post.user.name}"></a>
                                             at <span th:text="${post.creationDate}"></span>
-                                            in <a th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
+                                            in <a th:if="${post.subReddit != null}" th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
                                         </div>
                                         <div class="comment-info" th:text="${post.getComments().size()} + ' comments'"></div>
                                     </div>

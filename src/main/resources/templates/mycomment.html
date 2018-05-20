@@ -45,10 +45,16 @@
                                     <div><div th:text="${comment.content}" th:attr="id='mycomment-content' + ${commentStat.index}"></div></div>
                                 </div>
                                 <div class="mycomment-edit-delete">
-                                    <form th:if = "${user != null}" action="#" th:action="@{'/deleteComment?username=' + ${user.name} + '&amp;commentid=' +  ${comment.id}}" method="post">
+                                    <form th:if = "${user != null and user == author}" action="#" th:action="@{'/deleteComment?username=' + ${user.name} + '&amp;commentid=' +  ${comment.id}}" method="post">
                                         <div><button class="btn btn-danger btn-sm" type="submit" name="delete" th:value="${comment.id}">Delete</button></div>
                                     </form>
-                                    <div th:if = "${user != null}">
+                                    <form th:if = "${user != null and user == author}" action="#" th:action="@{'/deleteComment?username=' + ${user.name} + '&amp;commentid=' +  ${comment.id}}" method="post">
+                                        <div><button class="btn btn-danger btn-sm" type="submit" name="delete" th:value="${comment.id}">Delete</button></div>
+                                    </form>
+                                    <div th:if = "${user != null and user == author}">
+                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" th:attr="data-target='#commentModal-'+${comment.id}">Edit</button>
+                                    </div>
+                                    <div th:if = "${user != null and user == author}">
                                         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" th:attr="data-target='#commentModal-'+${comment.id}">Edit</button>
                                     </div>
                                     <div class="modal fade" th:attr="id='commentModal-'+${comment.id}">
