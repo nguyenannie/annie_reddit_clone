@@ -11,10 +11,10 @@
     <div class="createSubReddit-container">
         <div class="createSubReddit-left" style="flex-grow: 5">
             <h1>Create subreddit</h1>
-            <form action="#" th:action="@{'createSubReddit?username=' + ${user.name}}" method="post" th:object="${subRedditForm}">
-                <div><input class="form-control createpost-field" placeholder="Name..." type="text" th:field="*{name}"/></div>
-                <div><input class="form-control createpost-field" placeholder="Content..." type="text" th:field="*{description}"/></div>
-                <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button></div>
+            <form action="#" th:action="@{'createSubReddit?username=' + ${user.name}}" method="post" th:object="${subRedditForm}" id="create_subreddit_form">
+                <div><input class="form-control createpost-field" placeholder="name" type="text" th:field="*{name}" id="name"/></div>
+                <div><input class="form-control createpost-field" placeholder="description" type="text" th:field="*{description}" id="description"/></div>
+                <div class="submitandcancel"><button class="btn btn-info" type="submit" id="create_subreddit_submit">Create</button></div>
             </form>
         </div>
         <div class="createSubReddit-right" style="flex-grow: 5">
@@ -26,5 +26,6 @@
             </div>
         </div>
     </div>
+    <script src="/js/create_subreddit.js"></script>
 </body>
 </html>

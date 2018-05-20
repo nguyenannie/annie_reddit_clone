@@ -51,11 +51,11 @@
 
             <div class="tab-content">
                 <div id="home" class="tab-pane fade in active">
-                    <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
-                        <div><input class="form-control createpost-field" placeholder="Title..." type="text" name="addtitle"/></div>
-                        <div><input class="form-control createpost-field" placeholder="Content..." type="text" name="addcontent"/></div>
-                        <div><input class="form-control createpost-field" placeholder="SubReddit..." type="text" name="addSubReddit"/></div>
-                        <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
+                    <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post" id="create_post">
+                        <div><input class="form-control createpost-field" placeholder="title" type="text" id="addtitle" name="addtitle"/></div>
+                        <div><input class="form-control createpost-field" placeholder="content" type="text" id="addcontent" name="addcontent"/></div>
+                        <div><input class="form-control createpost-field" placeholder="SubReddit" type="text" id="addSubReddit" name="addSubReddit"/></div>
+                        <div class="submitandcancel"><button class="btn btn-info" id="create_post_submit" type="submit">Create</button>
                             <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
                     </form>
                 </div>
