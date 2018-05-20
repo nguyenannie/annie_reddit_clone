@@ -40,14 +40,15 @@ public class SubRedditServiceDbImpl implements SubRedditService {
         return subRedditRepository.findByUser(user);
     }
 
-//    @Override
-//    public List<SubReddit> findByPost(Post post) {
-//        return subRedditRepository.findByPost(post);
-//    }
+    @Override
+    public SubReddit findByName(String name) {
+        return subRedditRepository.findByName(name);
+    }
 
-//    @Override
-//    public List<SubReddit> findByUserAndPost(RedditUser user, Post post) {
-//        return subRedditRepository.findByUserAndPost(user, post);
-//    }
+    @Override
+    public List<SubReddit> findByNameLike(String name) {
+        return subRedditRepository.findByNameLike(name);
+    }
+
 
 }

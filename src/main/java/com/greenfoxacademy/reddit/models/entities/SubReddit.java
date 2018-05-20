@@ -1,7 +1,9 @@
 package com.greenfoxacademy.reddit.models.entities;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -11,9 +13,12 @@ public class SubReddit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(unique = true, nullable = false)
     private String name;
     private String description;
-    private String creationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date creationDate;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
     @JoinColumn(name = "user_id")
@@ -27,7 +32,7 @@ public class SubReddit {
     }
 
     public SubReddit(RedditUser user) {
-        creationDate = String.valueOf(LocalDateTime.now());
+//        creationDate = String.valueOf(LocalDateTime.now());
         this.user = user;
     }
 
@@ -48,11 +53,11 @@ public class SubReddit {
         this.name = name;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -79,4 +84,5 @@ public class SubReddit {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

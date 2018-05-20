@@ -12,8 +12,8 @@ import java.util.List;
 public interface SubRedditRepository extends CrudRepository<SubReddit, Long> {
 
     List<SubReddit> findByUser(RedditUser user);
-//    List<SubReddit> findByPost(Post post);
-//    List<SubReddit> findByUserAndPost(RedditUser user, Post post);
     List<SubReddit> findAll();
+    List<SubReddit> findByNameLike(String name);
+    SubReddit findByName(String name);
 
 }

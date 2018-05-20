@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Account #</title>
+    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="utf-8" />
+</head>
+<body class="mycomment-body">
+<div th:replace="home :: header"></div>
+<div class="mycomment-container">
+    <h1 th:if="${author != null}" class="author-name" th:text = "'Author: ' + ${author.name}"></h1>
+    <h1 th:if="${author == null}" class="author-name" th:text = "'Author: ' + ${user.name}"></h1>
+    <div th:replace="mypost :: header"></div>
+    <div class="mySubReddits-container">
+        <div class="mySubReddits-container-left">
+            <div th:if="${mySubReddits != null or mySubReddits.size() != 0}" class="mySubReddit-item" th:each="subReddit : ${mySubReddits}">
+                <div class="subReddits-title">
+                    <a th:if="${user == null}" th:text="${subReddit.name}" th:href="@{'/subReddit?subRedditName=' + ${subReddit.name}}"></a>
+                    <a th:if="${user != null}" th:text="${subReddit.name}" th:href="@{'/subReddit?subRedditName=' + ${subReddit.name} + '&amp;username=' + ${user.name}}"></a>
+                </div>
+                <div>
+                    <p>Created at <span th:text="${subReddit.creationDate}"></span></p>
+                </div>
+            </div>
+            <div th:if="${mySubReddits == null or mySubReddits.size() == 0}" class="mySubReddit-item">
+                <div><p>No SubReddit Yet</p></div>
+            </div>
+        </div>
+        <div class="side-column">
+            <div class="home-user side-item">
+                <div id="deco-title">
+                    <div id="reddit-icon">
+                        <img style="width:50px;height:60px;" src="http://i.imgur.com/O1HZ1.jpg" />
+                    </div>
+                    <div>
+                        <h3>Home</h3>
+                    </div>
+                </div>
+                <div>Your personal Reddit frontpage. Come here to check in with your favorite communities. </div>
+                <div th:if="${user != null}">
+                    <a class="btn btn-warning create-post-button btn-block" th:href="@{'/createSubReddit?username=' + ${user.name}}">Create SubReddit</a>
+                </div>
+                <div th:if="${user == null}">
+                    <a class="btn btn-warning create-post-button btn-block" onclick="createPostNotSignIn()">Create SubReddit</a>
+                </div>
+            </div>
+            <div class="hot-news side-item">
+                Your personal Reddit frontpage. Come here to check in with your favorite communities.
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

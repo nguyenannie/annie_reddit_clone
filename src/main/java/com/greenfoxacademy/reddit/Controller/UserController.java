@@ -81,6 +81,21 @@ public class UserController {
         return "mycomment";
     }
 
+    @GetMapping("/user/subReddits")
+    public String getSubReddit(Model model, @RequestParam(value = "username", required = false) String username,
+                               @RequestParam(value = "authorname", required = false) String authorname) {
+        RedditUser user = userServiceDb.findByName(username);
+        RedditUser author = userServiceDb.findByName(authorname);
+        if (author != null) {
+            model.addAttribute("mySubReddits", author.getSubReddits());
+        } else if (user != null) {
+            model.addAttribute("mySubReddits", user.getSubReddits());
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("author", author);
+        return "mySubReddit";
+    }
+
     @PostMapping("/editComment")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String editComment(@ModelAttribute(value = "postForm") PostForm postForm, Model model,
@@ -110,9 +125,7 @@ public class UserController {
         for (Vote vote : votes) {
             voteService.delete(vote);
         }
-//
-//        user.removePost(post);
-//        userServiceDb.save(user);
+
         postServiceDb.delete(post);
 
         model.addAttribute("user", user);
@@ -140,10 +153,13 @@ public class UserController {
     public String deleteComment(Model model, @RequestParam(value = "username") String username, @RequestParam(value = "commentid") String commentid) {
         RedditUser user = userServiceDb.findByName(username);
         Comment comment = commentServiceDb.findOne(Long.parseLong(commentid));
+        Post post = comment.getPost();
 
         user.removeComment(comment);
         userServiceDb.save(user);
         commentServiceDb.delete(Long.parseLong(commentid));
+        post.setCommentsNum(post.getComments().size());
+        postServiceDb.save(post);
 
         model.addAttribute("user", user);
         model.addAttribute("comment", comment);

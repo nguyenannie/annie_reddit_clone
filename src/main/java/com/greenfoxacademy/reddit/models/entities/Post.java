@@ -1,24 +1,31 @@
 package com.greenfoxacademy.reddit.models.entities;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(nullable = false)
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
-    private String creationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date creationDate;
     private String link;
     private String imageUrl;
     private String videoUrl;
     private String videoThumbnail;
     private int score;
+    private int commentsNum;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
     @JoinColumn(name = "subReddit_id")
@@ -35,14 +42,14 @@ public class Post {
     private List<Vote> votes;
 
     public Post() {
-        creationDate = String.valueOf(LocalDate.now());
+//        creationDate = String.valueOf(LocalDate.now());
     }
 
     public Post(RedditUser author, String title, String content) {
         this.user = author;
         this.title = title;
         this.content = content;
-        creationDate = String.valueOf(LocalDate.now());
+//        creationDate = String.valueOf(LocalDate.now());
     }
 
     public void setUser(RedditUser user) {
@@ -103,11 +110,11 @@ public class Post {
         this.content = content;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -191,5 +198,13 @@ public class Post {
 
     public void setSubReddit(SubReddit subReddit) {
         this.subReddit = subReddit;
+    }
+
+    public int getCommentsNum() {
+        return commentsNum;
+    }
+
+    public void setCommentsNum(int commentsNum) {
+        this.commentsNum = commentsNum;
     }
 }

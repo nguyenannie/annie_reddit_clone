@@ -9,7 +9,7 @@
 <body class="createpost-body">
 <div th:replace="home :: header"></div>
 <div class="createpost-container">
-    <div style="flex-grow: 10">
+    <div class="createpost-container-inner">
         <main class="createpost fillin">
             <div class="container-fluid">
                 <h1>Create New Post</h1>
@@ -52,32 +52,36 @@
             <div class="tab-content">
                 <div id="home" class="tab-pane fade in active">
                     <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
-                        <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
-                        <div><input class="form-control" placeholder="Content..." type="text" name="addcontent"/></div>
+                        <div><input class="form-control createpost-field" placeholder="Title..." type="text" name="addtitle"/></div>
+                        <div><input class="form-control createpost-field" placeholder="Content..." type="text" name="addcontent"/></div>
+                        <div><input class="form-control createpost-field" placeholder="SubReddit..." type="text" name="addSubReddit"/></div>
                         <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
                             <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
                     </form>
                 </div>
                 <div id="menu1" class="tab-pane fade">
                     <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
-                        <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
-                        <div><input class="form-control" placeholder="Link to external source..." type="text" name="addLink"/></div>
+                        <div><input class="form-control createpost-field" placeholder="Title..." type="text" name="addtitle"/></div>
+                        <div><input class="form-control createpost-field" placeholder="Link to external source..." type="text" name="addLink"/></div>
+                        <div><input class="form-control createpost-field" placeholder="SubReddit..." type="text" name="addSubReddit"/></div>
                         <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
                             <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
                     </form>
                 </div>
                 <div id="menu2" class="tab-pane fade">
                     <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
-                        <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
-                        <div><input class="form-control" placeholder="Link to image..." type="text" name="addImageUrl"/></div>
+                        <div><input class="form-control createpost-field" placeholder="Title..." type="text" name="addtitle"/></div>
+                        <div><input class="form-control createpost-field" placeholder="Link to image..." type="text" name="addImageUrl"/></div>
+                        <div><input class="form-control createpost-field" placeholder="SubReddit..." type="text" name="addSubReddit"/></div>
                         <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
                             <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
                     </form>
                 </div>
                 <div id="menu3" class="tab-pane fade">
                     <form action="#" th:action="@{'/createpost?username=' + ${user.name}}" method="post">
-                        <div><input class="form-control createpost-title" placeholder="Title..." type="text" name="addtitle"/></div>
-                        <div><input class="form-control" placeholder="Link to video..." type="text" name="addVideoUrl"/></div>
+                        <div><input class="form-control createpost-field" placeholder="Title..." type="text" name="addtitle"/></div>
+                        <div><input class="form-control createpost-field" placeholder="Link to video..." type="text" name="addVideoUrl"/></div>
+                        <div><input class="form-control createpost-field" placeholder="SubReddit..." type="text" name="addSubReddit"/></div>
                         <div class="submitandcancel"><button class="btn btn-info" type="submit">Create</button>
                             <a class="btn btn-danger" role="button" th:href="@{'?username=' + ${user.name}}">Cancel</a></div>
                     </form>

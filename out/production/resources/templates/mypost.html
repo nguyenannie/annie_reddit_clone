@@ -41,6 +41,15 @@
                     <li th:if="${author == null}">
                         <a class="nav-link" th:href="@{'/user/comments?username=' + ${user.name}}">Comments</a>
                     </li>
+                    <li th:if="${user == null}">
+                        <a class="nav-link" th:href="@{'/user/subReddits?authorname=' + ${author.name}}">SubReddits</a>
+                    </li>
+                    <li th:if="${user != null and author != null}">
+                        <a class="nav-link" th:href="@{'/user/subReddits?authorname=' + ${author.name} + '&amp;username=' + ${user.name}}">SubReddits</a>
+                    </li>
+                    <li th:if="${author == null}">
+                        <a class="nav-link" th:href="@{'/user/subReddits?username=' + ${user.name}}">SubReddits</a>
+                    </li>
                     <li th:if = "${user != null}">
                         <a class="nav-link" th:href="@{'/changepassword?username=' + ${user.name}}">Change Password</a>
                     </li>
@@ -51,7 +60,7 @@
 </header>
 <main class="main-background">
     <div class="page-container">
-        <div class="post-area-container-mypost" style="flex-grow: 10">
+        <div class="post-area-container-mypost">
             <div class="post-container" th:each="post:${myposts}">
                 <div class="post-info-container">
                     <div class="vote-container">
@@ -61,7 +70,6 @@
                     <div class="content-container">
                         <div class="content-inner-container">
                             <div class="thumbnail">
-                                <!--<img src="https://i.imgur.com/gdWIxn2.jpg" alt="Smiley face" height="42" width="42"/>-->
                                 <div th:if="${post.imageUrl == null and post.link == null and post.videoUrl == null}" class="image-in-post">
                                     <img class="img-itself" th:src="@{/images/text-icon.svg}"/>
                                 </div>
@@ -78,8 +86,16 @@
                             <div class="text-content">
                                 <div class="title" th:if="${user != null}"><a th:href="@{'/post?username=' + ${user.name} + '&amp;postid=' + ${post.id}}" th:text="${post.title}"></a></div>
                                 <div class="title" th:if="${user == null}"><a th:href="@{'/post?postid=' + ${post.id}}" th:text="${post.title}"></a></div>
-                                <div th:if = "${user == null}" class="extra-info">Posted by <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}}" th:text="${post.user.name}"></a> at <span th:text="${post.creationDate}"></span></div>
-                                <div th:if = "${user != null}" class="extra-info">Posted by <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}} + '&amp;username=' + ${user.name}" th:text="${post.user.name}"></a> at <span th:text="${post.creationDate}"></span></div>
+                                <div th:if = "${user == null}" class="extra-info">Posted by
+                                    <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}}" th:text="${post.user.name}"></a>
+                                    at <span th:text="${post.creationDate}"></span>
+                                    in <a th:href="@{'/subReddit?subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
+                                </div>
+                                <div th:if = "${user != null}" class="extra-info">Posted by
+                                    <a th:href= "@{'/user/posts?authorname=' + ${post.user.name}} + '&amp;username=' + ${user.name}"
+                                       th:text="${post.user.name}"></a> at <span th:text="${post.creationDate}"></span>
+                                    in <a th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${post.subReddit.name}}" th:text="${post.subReddit.name}"></a>
+                                </div>
                                 <div class="edit-delete">
                                     <form th:if="${user != null and user == author}" action="#" th:action="@{'/deletePost?username=' + ${user.name} + '&amp;postid=' +  ${post.id}}" method="post">
                                         <div><button class="btn btn-danger btn-sm" type="submit" name="delete" th:value="${post.id}">Delete</button></div>
@@ -125,7 +141,7 @@
                 </div>
             </div>
         </div>
-        <div class="side-column" style="flex-grow: 3">
+        <div class="side-column">
             <div class="home-user side-item-mypost">
                 <div id="deco-title">
                     <div id="reddit-icon">

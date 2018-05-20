@@ -32,7 +32,7 @@
         <!--</main>-->
 <!--</div>-->
 <div class="postdetail-container">
-    <div class="postdetail" style="flex-grow: 10">
+    <div class="postdetail">
         <div class="title-postdetail">
             <div class="vote-content-postdetail" th:with="vote=${voteService.findByPostAndUser(post, user)}">
                 <div th:if="${user == null}">
@@ -60,10 +60,19 @@
                 </form>
             </div>
             <div class="title-info-postdetail">
-                <div><p id="author-time" th:text="'Posted by ' + ${post.user} + ' at ' + ${post.creationDate}"></p></div>
+                <div id="author-time">
+                    <p>Posted by </p>
+                    <a th:text="${post.user.name}" th:href="@{'/?username=' + ${post.user.name}}"></a>
+                    <p th:text="'at ' + ${post.creationDate} + ' in '"></p>
+                    <a th:if="${user != null}" th:text="${post.subReddit.name}" th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${post.subReddit.name}}"></a>
+                    <a th:if="${user == null}" th:text="${post.subReddit.name}" th:href="@{'/subReddit?subRedditName=' + ${post.subReddit.name}}"></a>
+                </div>
                 <div th:if="${post.link == null or post.videoUrl != null}"><h3 id="post-title" th:text="${post.title}"></h3></div>
                 <div th:if="${post.link != null and post.videoUrl == null}"><a class="title-link" th:href="@{${post.link}}" th:text="${post.title}" target="_blank"></a></div>
-                <div th:if="${post.imageUrl == null and post.videoUrl == null and post.link == null}"><p th:text="'“ ' + ${post.content} + ' ”'"></p></div>
+                <div th:if="${post.imageUrl == null and post.videoUrl == null and post.link == null}">
+                    <!--<p th:text="'“ ' + ${post.content} + ' ”'"></p>-->
+                    <div th:text="${post.content}" id="post-content"></div>
+                </div>
                 <div th:if="${post.imageUrl != null and post.videoUrl == null}">
                     <div class="postdetail-image-container">
                         <img class="img-itself" th:src="@{${post.imageUrl}}"/>
@@ -129,7 +138,10 @@
 </div>
 <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
-<script src="https://unpkg.com/markdown-it@8.4.1/dist/markdown-it.min.js"></script>
+<!--<script src="https://unpkg.com/markdown-it@8.4.1/dist/markdown-it.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it-emoji/1.4.0/markdown-it-emoji.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it-emoji/1.4.0/markdown-it-sub.min.js"></script>
 </body>
 <script>
     function createPostNotSignIn() {

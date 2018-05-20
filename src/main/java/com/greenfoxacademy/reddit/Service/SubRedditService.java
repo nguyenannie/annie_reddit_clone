@@ -15,7 +15,7 @@ public interface SubRedditService {
     SubReddit findOne(long id);
     List<SubReddit> findAll();
     List<SubReddit> findByUser(RedditUser user);
-//    List<SubReddit> findByPost(Post post);
-//    List<SubReddit> findByUserAndPost(RedditUser user, Post post);
+    SubReddit findByName(String name);
+    List<SubReddit> findByNameLike(String name);
 
 }

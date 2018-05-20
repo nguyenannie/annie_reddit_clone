@@ -57,14 +57,24 @@ public class HomeController {
         int setPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int setPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-        Page<Post> posts =
+        Page<Post> scored_posts =
                 postServiceDb.findByPage(new PageRequest(setPage, setPageSize, Sort.Direction.DESC, "score"));
-        Pager pager = new Pager(posts.getTotalPages(), posts.getNumber(), NUM_OF_BUTTONS);
+        Page<Post> commented_posts =
+                postServiceDb.findByPage(new PageRequest(setPage, setPageSize, Sort.Direction.DESC, "commentsNum"));
+        Page<Post> date_posts =
+                postServiceDb.findByPage(new PageRequest(setPage, setPageSize, Sort.Direction.DESC, "creationDate"));
+        Pager scored_pager = new Pager(scored_posts.getTotalPages(), scored_posts.getNumber(), NUM_OF_BUTTONS);
+        Pager commented_pager = new Pager(commented_posts.getTotalPages(), commented_posts.getNumber(), NUM_OF_BUTTONS);
+        Pager date_pager = new Pager(date_posts.getTotalPages(), date_posts.getNumber(), NUM_OF_BUTTONS);
 
         model.addAttribute("voteService", voteService);
         model.addAttribute("user", user);
-        model.addAttribute("posts", posts);
-        model.addAttribute("pager", pager);
+        model.addAttribute("scored_posts", scored_posts);
+        model.addAttribute("commented_posts", commented_posts);
+        model.addAttribute("date_posts", date_posts);
+        model.addAttribute("scored_pager", scored_pager);
+        model.addAttribute("commented_pager", commented_pager);
+        model.addAttribute("date_pager", date_pager);
         model.addAttribute("selectedPageSize", setPageSize);
         model.addAttribute("pageSizes", PAGE_SIZES);
 

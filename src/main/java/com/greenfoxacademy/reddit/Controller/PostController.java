@@ -1,20 +1,22 @@
 package com.greenfoxacademy.reddit.Controller;
 
+import com.greenfoxacademy.reddit.Service.*;
 import com.greenfoxacademy.reddit.models.entities.Post;
 import com.greenfoxacademy.reddit.models.entities.RedditUser;
+import com.greenfoxacademy.reddit.models.entities.SubReddit;
 import com.greenfoxacademy.reddit.models.entities.Vote;
-import com.greenfoxacademy.reddit.Service.CommentServiceDbImpl;
-import com.greenfoxacademy.reddit.Service.PostServiceDbImpl;
-import com.greenfoxacademy.reddit.Service.RedditUserServiceDbImpl;
-import com.greenfoxacademy.reddit.Service.VoteService;
+import com.greenfoxacademy.reddit.models.forms.SearchForm;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class PostController {
@@ -23,6 +25,10 @@ public class PostController {
     private final PostServiceDbImpl postServiceDb;
     private final RedditUserServiceDbImpl userServiceDb;
     private final VoteService voteService;
+    private List<SubReddit> searchResults;
+
+    @Autowired
+    private SubRedditService subRedditService;
 
     @Autowired
     public PostController(CommentServiceDbImpl commentServiceDb,
@@ -88,7 +94,8 @@ public class PostController {
                          @RequestParam(value = "username") String username) {
         RedditUser user = userServiceDb.findByName(username);
         model.addAttribute("user", user);
-
+        model.addAttribute("searchResults", searchResults);
+        model.addAttribute("searchForm", new SearchForm());
         return "createpost";
     }
 
@@ -104,6 +111,8 @@ public class PostController {
         String imageUrl = request.getParameter("addImageUrl");
         String videoUrl = request.getParameter("addVideoUrl");
         String videoThumbnail = "/images/video-icon.png";
+        String subRedditName = request.getParameter("addSubReddit");
+        SubReddit subReddit = subRedditService.findByName(subRedditName);
 
         if (videoUrl != null && videoUrl.contains("youtube")) {
             String videoId = videoUrl.split("\\?v=")[1];
@@ -117,6 +126,7 @@ public class PostController {
         newPost.setLink(link);
         newPost.setVideoUrl(videoUrl);
         newPost.setVideoThumbnail(videoThumbnail);
+        newPost.setSubReddit(subReddit);
         user.addPost(newPost);
         newPost.setUser(user);
 
@@ -138,6 +148,20 @@ public class PostController {
         model.addAttribute("comments", post.getComments());
         model.addAttribute("voteService", voteService);
         return "postdetail";
+    }
+
+    @PostMapping("/searchSubReddit")
+    public String searchSubReddit(Model model, @RequestParam(value = "username", required = false) String username,
+                                  @ModelAttribute(name = "searchForm") SearchForm searchForm) {
+        String keywords = searchForm.getKeyword();
+        searchResults = subRedditService.findByNameLike(keywords);
+        System.out.println(keywords);
+        System.out.println(searchResults.size());
+        for (SubReddit s : searchResults) {
+            System.out.println(s.getName());
+        }
+        model.addAttribute("searchResults", searchResults);
+        return "redirect:/createpost?username=" + username;
     }
 
 }

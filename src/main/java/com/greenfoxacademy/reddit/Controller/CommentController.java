@@ -45,6 +45,7 @@ public class CommentController {
 
         user.addComment(newComment);
         post.addComment(newComment);
+        post.setCommentsNum(post.getComments().size());
 
         userServiceDb.save(user);
         postServiceDb.save(post);
