@@ -26,13 +26,13 @@
                             </div>
                             <div class="title-info-mycomment" th:if="${user == null}">
                                 <p>by</p>
-                                <a th:text="${comment.user}" th:href= "@{'/user/posts?authorname=' + ${comment.post.user.name} + '&amp;username=' + ${user.name}}"></a>
+                                <a th:text="${comment.user}" th:href= "@{'/user/posts?authorname=' + ${comment.post.user.name}}"></a>
                                 <p th:text="'at ' + ${comment.post.creationDate} + ' in '"></p>
                                 <a th:if="${comment.post.subReddit != null}" th:href="@{'/subReddit?subRedditName=' + ${comment.post.subReddit.name}}" th:text="${comment.post.subReddit.name}"></a>
                             </div>
                             <div class="title-info-mycomment" th:if="${user != null}">
                                 <p>by</p>
-                                <a th:text="${comment.user}" th:href= "@{'/user/posts?authorname=' + ${comment.post.user.name}}"></a>
+                                <a th:text="${comment.user}" th:href= "@{'/user/posts?authorname=' + ${comment.post.user.name} + '&amp;username=' + ${user.name}}"></a>
                                 <p th:text="'at ' + ${comment.post.creationDate} + ' in '"></p>
                                 <a th:if="${comment.post.subReddit != null}" th:href="@{'/subReddit?username=' + ${user.name} + '&amp;subRedditName=' + ${comment.post.subReddit.name}}" th:text="${comment.post.subReddit.name}"></a>
                             </div>

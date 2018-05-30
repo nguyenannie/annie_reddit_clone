@@ -1,10 +1,8 @@
+var md = window.markdownit().use(window.markdownitEmoji);
 for (var i = 0; i < $('div[id^="comment-content"]').length; i++) {
-        var md = window.markdownit();
-        var emoji = window.markdownit().use(window.markdownitEmoji);
         var s = 'comment-content' + i;
         var markdown = $('#' + s).html();
         var html = md.render(markdown);
-        html = emoji.render(markdown);
         $('#' + s).html(html);
 }
 

@@ -42,8 +42,7 @@ public class PostController {
 
     @PostMapping("/upvote")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String postUpvote(Model model, HttpServletRequest request,
-                             @RequestParam(value = "postid") String id,
+    public String postUpvote(Model model, @RequestParam(value = "postid") String id,
                              @RequestParam(value = "username") String username) {
         Post post = postServiceDb.findOne(Long.parseLong(id));
         RedditUser user = userServiceDb.findByName(username);
